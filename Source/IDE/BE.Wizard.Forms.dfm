@@ -2,7 +2,7 @@ object BEWizardForms: TBEWizardForms
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  Caption = 'BEWizardForms'
+  Caption = 'Boss Experts'
   ClientHeight = 309
   ClientWidth = 645
   Color = clBtnFace
@@ -13,9 +13,38 @@ object BEWizardForms: TBEWizardForms
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
+  object Label3: TLabel
+    Left = 8
+    Top = 5
+    Width = 25
+    Height = 13
+    Caption = 'Login'
+  end
+  object Label1: TLabel
+    Left = 8
+    Top = 53
+    Width = 60
+    Height = 13
+    Caption = 'Dependency'
+  end
+  object Label2: TLabel
+    Left = 8
+    Top = 100
+    Width = 35
+    Height = 13
+    Caption = 'Version'
+  end
+  object Label4: TLabel
+    Left = 299
+    Top = 5
+    Width = 34
+    Height = 13
+    Caption = 'History'
+  end
   object pnlBottom: TPanel
     Left = 0
     Top = 268
@@ -23,7 +52,7 @@ object BEWizardForms: TBEWizardForms
     Height = 41
     Align = alBottom
     BevelOuter = bvNone
-    TabOrder = 0
+    TabOrder = 3
     object btnInstall: TButton
       Left = 105
       Top = 8
@@ -31,6 +60,7 @@ object BEWizardForms: TBEWizardForms
       Height = 25
       Caption = 'Install'
       TabOrder = 0
+      OnClick = btnInstallClick
     end
     object btnUpdate: TButton
       Left = 202
@@ -39,14 +69,7 @@ object BEWizardForms: TBEWizardForms
       Height = 25
       Caption = 'Update'
       TabOrder = 1
-    end
-    object btnLogin: TButton
-      Left = 536
-      Top = 8
-      Width = 91
-      Height = 25
-      Caption = 'Login'
-      TabOrder = 2
+      OnClick = btnUpdateClick
     end
     object btnUninstall: TButton
       Left = 299
@@ -54,7 +77,8 @@ object BEWizardForms: TBEWizardForms
       Width = 91
       Height = 25
       Caption = 'Uninstall'
-      TabOrder = 3
+      TabOrder = 2
+      OnClick = btnUninstallClick
     end
     object btnInit: TButton
       Left = 8
@@ -62,8 +86,60 @@ object BEWizardForms: TBEWizardForms
       Width = 91
       Height = 25
       Caption = 'Init'
-      TabOrder = 4
+      TabOrder = 3
       OnClick = btnInitClick
     end
+    object btnLogin: TButton
+      Left = 536
+      Top = 8
+      Width = 91
+      Height = 25
+      Caption = 'Login'
+      TabOrder = 4
+      OnClick = btnLoginClick
+    end
+  end
+  object edtHostLogin: TComboBox
+    Left = 8
+    Top = 23
+    Width = 259
+    Height = 21
+    TabOrder = 0
+    Items.Strings = (
+      'github.com'
+      'bitbucket.org')
+  end
+  object edtDependency: TEdit
+    Left = 8
+    Top = 71
+    Width = 259
+    Height = 21
+    TabOrder = 1
+  end
+  object edtVersion: TEdit
+    Left = 8
+    Top = 119
+    Width = 113
+    Height = 21
+    TabOrder = 2
+  end
+  object lstHistory: TListBox
+    Left = 299
+    Top = 23
+    Width = 328
+    Height = 239
+    ItemHeight = 13
+    Items.Strings = (
+      'horse'
+      'horse-basic-auth'
+      'horse-compression'
+      'horse-cors'
+      'handle-exception'
+      'horse-jwt'
+      'horse-logger'
+      'horse-octet-stream'
+      'jhonson')
+    TabOrder = 4
+    OnClick = lstHistoryClick
   end
 end

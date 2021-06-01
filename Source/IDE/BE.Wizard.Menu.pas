@@ -39,11 +39,7 @@ procedure TBEWizardMenu.Execute;
 begin
   if not Assigned(BEWizardForms) then
     BEWizardForms := TBEWizardForms.Create(nil);
-  try
-    BEWizardForms.Show;
-  finally
-//    BEWizardForms.Free;
-  end;
+  BEWizardForms.Show;
 end;
 
 function TBEWizardMenu.GetIDString: string;
@@ -53,7 +49,7 @@ end;
 
 function TBEWizardMenu.GetMenuText: string;
 begin
-  result := 'Boss IDE';
+  result := 'Boss Expert';
 end;
 
 function TBEWizardMenu.GetName: string;
@@ -70,5 +66,10 @@ class function TBEWizardMenu.New: IOTAWizard;
 begin
   result := Self.Create;
 end;
+
+initialization
+
+finalization
+  BEWizardForms.Free;
 
 end.
