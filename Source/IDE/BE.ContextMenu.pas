@@ -118,6 +118,8 @@ begin
   FProject  := Project;
   FEnabled  := True;
   FCaption  := 'Boss';
+  FParent := '';
+
 end;
 
 procedure TBEContextMenuBoss.Execute(const MenuContextList: IInterfaceList);
@@ -149,7 +151,7 @@ end;
 
 function TBEContextMenuBoss.GetIsMultiSelectable: Boolean;
 begin
-  Result := True;
+  Result := False;
 end;
 
 function TBEContextMenuBoss.GetName: string;
