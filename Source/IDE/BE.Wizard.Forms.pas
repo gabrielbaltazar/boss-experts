@@ -25,7 +25,6 @@ type
     Label4: TLabel;
     procedure FormShow(Sender: TObject);
     procedure btnInitClick(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
     procedure btnInstallClick(Sender: TObject);
     procedure btnUpdateClick(Sender: TObject);
     procedure btnUninstallClick(Sender: TObject);
@@ -33,6 +32,7 @@ type
     procedure lstHistoryClick(Sender: TObject);
   private
     FBossCommand: IBECommands;
+    FPath: String;
     { Private declarations }
   public
     { Public declarations }
@@ -46,8 +46,7 @@ implementation
 {$R *.dfm}
 
 uses
-  ToolsAPI,
-  BE.Commands;
+  ToolsAPI;
 
 procedure TBEWizardForms.btnInitClick(Sender: TObject);
 begin
@@ -72,11 +71,6 @@ end;
 procedure TBEWizardForms.btnUpdateClick(Sender: TObject);
 begin
   FBossCommand.Update(edtDependency.Text, edtVersion.Text);
-end;
-
-procedure TBEWizardForms.FormCreate(Sender: TObject);
-begin
-  FBossCommand := CreateBossCommand('D:\Desenvolvimento\Teste');
 end;
 
 procedure TBEWizardForms.FormShow(Sender: TObject);

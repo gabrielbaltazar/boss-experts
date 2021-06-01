@@ -35,9 +35,10 @@ contains
   dpipes in 'Third\dpipes.pas',
   dprocess in 'Third\dprocess.pas',
   BE.Wizard.Menu in 'IDE\BE.Wizard.Menu.pas',
-  BE.Commands in 'IDE\BE.Commands.pas',
   BE.Wizard.Forms in 'IDE\BE.Wizard.Forms.pas' {BEWizardForms},
   BE.Commands.Interfaces in 'Core\BE.Commands.Interfaces.pas',
-  BE.Commands.ProcessDelphi in 'Core\BE.Commands.ProcessDelphi.pas';
+  BE.Commands.ProcessDelphi in 'Core\BE.Commands.ProcessDelphi.pas',
+  BE.ContextMenu in 'IDE\BE.ContextMenu.pas',
+  BE.Registry in 'IDE\BE.Registry.pas';
 
 end.
