@@ -124,9 +124,13 @@ end;
 
 procedure TBEContextMenuBoss.Execute(const MenuContextList: IInterfaceList);
 begin
-  if not Assigned(BEWizardForms) then
-    BEWizardForms := TBEWizardForms.Create(nil);
-  BEWizardForms.Show;
+  BEWizardForms := TBEWizardForms.Create(nil);
+  try
+    BEWizardForms.Path(ExtractFilePath( FProject.FileName ));
+    BEWizardForms.ShowModal;
+  finally
+    BEWizardForms.Free;
+  end;
 end;
 
 function TBEContextMenuBoss.GetCaption: string;

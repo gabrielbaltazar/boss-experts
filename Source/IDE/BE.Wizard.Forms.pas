@@ -35,6 +35,7 @@ type
     FPath: String;
     { Private declarations }
   public
+    procedure Path(Value: String);
     { Public declarations }
   end;
 
@@ -94,6 +95,12 @@ end;
 procedure TBEWizardForms.lstHistoryClick(Sender: TObject);
 begin
   edtDependency.Text := lstHistory.Items[lstHistory.ItemIndex];
+end;
+
+procedure TBEWizardForms.Path(Value: String);
+begin
+  FPath := Value;
+  FBossCommand := CreateBossCommand(FPath)
 end;
 
 end.
