@@ -39,6 +39,7 @@ contains
   BE.Commands.ProcessDelphi in 'Core\BE.Commands.ProcessDelphi.pas',
   BE.ContextMenu in 'IDE\BE.ContextMenu.pas',
   BE.Registry in 'IDE\BE.Registry.pas',
-  BE.Constants in 'Core\BE.Constants.pas';
+  BE.Constants in 'Core\BE.Constants.pas',
+  BE.Model in 'Core\BE.Model.pas';
 
 end.

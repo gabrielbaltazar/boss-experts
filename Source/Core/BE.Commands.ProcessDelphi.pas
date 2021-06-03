@@ -4,6 +4,7 @@ interface
 
 uses
   dprocess,
+  BE.Model,
   BE.Commands.Interfaces,
   System.SysUtils,
   System.Threading;
@@ -23,13 +24,13 @@ type TBECommandsProcessDelphi = class(TInterfacedObject, IBECommands)
     function Login(Host: String): IBECommands;
 
     function Install(AComplete: TProc = nil): IBECommands; overload;
-    function Install(ADependency: string; AVersion: String = ''; AComplete: TProc = nil): IBECommands; overload;
+    function Install(ADependency: TBEModelDependency; AComplete: TProc = nil): IBECommands; overload;
 
     function Update(AComplete: TProc = nil): IBECommands; overload;
-    function Update(ADependency: string; AVersion: String = ''; AComplete: TProc = nil): IBECommands; overload;
+    function Update(ADependency: TBEModelDependency; AComplete: TProc = nil): IBECommands; overload;
 
     function Uninstall(AComplete: TProc = nil): IBECommands; overload;
-    function Uninstall(ADependency: String; AComplete: TProc = nil): IBECommands; overload;
+    function Uninstall(ADependency: TBEModelDependency; AComplete: TProc = nil): IBECommands; overload;
 
   public
     constructor create(Path: string);
@@ -65,16 +66,10 @@ begin
   RunCommand('boss install', AComplete);
 end;
 
-function TBECommandsProcessDelphi.Install(ADependency, AVersion: String; AComplete: TProc): IBECommands;
-var
-  dependency: String;
+function TBECommandsProcessDelphi.Install(ADependency: TBEModelDependency; AComplete: TProc): IBECommands;
 begin
   result := Self;
-  dependency := ADependency;
-  if not AVersion.Trim.IsEmpty then
-    dependency := dependency + ':' + AVersion;
-
-  RunCommand(Format('boss install %s', [dependency]).Trim, AComplete);
+  RunCommand(Format('boss install %s', [ADependency.ToString]).Trim, AComplete);
 end;
 
 function TBECommandsProcessDelphi.Login(Host: String): IBECommands;
@@ -120,10 +115,10 @@ begin
   RunCommand('boss uninstall', AComplete);
 end;
 
-function TBECommandsProcessDelphi.Uninstall(ADependency: String; AComplete: TProc = nil): IBECommands;
+function TBECommandsProcessDelphi.Uninstall(ADependency: TBEModelDependency; AComplete: TProc = nil): IBECommands;
 begin
   result := Self;
-  RunCommand(Format('boss uninstall %s', [ADependency]).Trim, AComplete);
+  RunCommand(Format('boss uninstall %s', [ADependency.name]).Trim, AComplete);
 end;
 
 function TBECommandsProcessDelphi.Update(AComplete: TProc = nil): IBECommands;
@@ -132,16 +127,10 @@ begin
   RunCommand('boss update', AComplete);
 end;
 
-function TBECommandsProcessDelphi.Update(ADependency, AVersion: String; AComplete: TProc): IBECommands;
-var
-  dependency: String;
+function TBECommandsProcessDelphi.Update(ADependency: TBEModelDependency; AComplete: TProc): IBECommands;
 begin
   result := Self;
-  dependency := ADependency;
-  if not AVersion.Trim.IsEmpty then
-    dependency := dependency + ':' + AVersion;
-
-  RunCommand(Format('boss update %s', [dependency]).Trim, AComplete);
+  RunCommand(Format('boss update %s', [ADependency.ToString]).Trim, AComplete);
 end;
 
 end.

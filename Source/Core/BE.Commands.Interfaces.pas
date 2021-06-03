@@ -3,6 +3,7 @@ unit BE.Commands.Interfaces;
 interface
 
 uses
+  BE.Model,
   System.SysUtils;
 
 type
@@ -14,13 +15,13 @@ type
     function Login(Host: String): IBECommands;
 
     function Install(AComplete: TProc = nil): IBECommands; overload;
-    function Install(ADependency: string; AVersion: String = ''; AComplete: TProc = nil): IBECommands; overload;
+    function Install(ADependency: TBEModelDependency; AComplete: TProc = nil): IBECommands; overload;
 
     function Update(AComplete: TProc = nil): IBECommands; overload;
-    function Update(ADependency: string; AVersion: String = ''; AComplete: TProc = nil): IBECommands; overload;
+    function Update(ADependency: TBEModelDependency; AComplete: TProc = nil): IBECommands; overload;
 
     function Uninstall(AComplete: TProc = nil): IBECommands; overload;
-    function Uninstall(ADependency: String; AComplete: TProc = nil): IBECommands; overload;
+    function Uninstall(ADependency: TBEModelDependency; AComplete: TProc = nil): IBECommands; overload;
   end;
 
 function CreateBossCommand(Path: String): IBECommands;

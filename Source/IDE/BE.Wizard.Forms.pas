@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
-  BE.Commands.Interfaces, Vcl.ComCtrls, ToolsAPI;
+  BE.Commands.Interfaces, Vcl.ComCtrls, ToolsAPI, BE.Model;
 
 type
   TBEWizardForms = class(TForm)
@@ -33,6 +33,8 @@ type
     FBossCommand: IBECommands;
 
     procedure DoRefresh;
+
+    function GetDependency: TBEModelDependency;
     { Private declarations }
   public
     constructor create(AOwner: TComponent; BossCommand: IBECommands; Project: IOTAProject); reintroduce;
@@ -47,8 +49,15 @@ implementation
 {$R *.dfm}
 
 procedure TBEWizardForms.btnInstallClick(Sender: TObject);
+var
+  dependency: TBEModelDependency;
 begin
-  FBossCommand.Install(edtDependency.Text, edtVersion.Text, Self.DoRefresh);
+  dependency := GetDependency;
+  try
+    FBossCommand.Install(dependency, Self.DoRefresh);
+  finally
+    dependency.Free;
+  end;
 end;
 
 procedure TBEWizardForms.btnLoginClick(Sender: TObject);
@@ -57,13 +66,27 @@ begin
 end;
 
 procedure TBEWizardForms.btnUninstallClick(Sender: TObject);
+var
+  dependency: TBEModelDependency;
 begin
-  FBossCommand.Uninstall(edtDependency.Text, Self.DoRefresh);
+  dependency := GetDependency;
+  try
+    FBossCommand.Uninstall(dependency, Self.DoRefresh);
+  finally
+    dependency.Free;
+  end;
 end;
 
 procedure TBEWizardForms.btnUpdateClick(Sender: TObject);
+var
+  dependency: TBEModelDependency;
 begin
-  FBossCommand.Update(edtDependency.Text, edtVersion.Text, Self.DoRefresh);
+  dependency := GetDependency;
+  try
+    FBossCommand.Update(dependency, Self.DoRefresh);
+  finally
+    dependency.Free;
+  end;
 end;
 
 constructor TBEWizardForms.create(AOwner: TComponent; BossCommand: IBECommands; Project: IOTAProject);
@@ -95,6 +118,11 @@ begin
     if Components[i] is TComboBox then
       theme.ApplyTheme(TComboBox(Components[i]));
   end;
+end;
+
+function TBEWizardForms.GetDependency: TBEModelDependency;
+begin
+  result := TBEModelDependency.create(edtDependency.Text, edtVersion.Text);
 end;
 
 procedure TBEWizardForms.lstHistoryClick(Sender: TObject);
