@@ -9,7 +9,8 @@ uses
   BE.Commands.Interfaces,
   BE.Wizard.Forms,
   System.Classes,
-  System.SysUtils;
+  System.SysUtils,
+  System.Threading;
 
 type
   TBEContextMenuWizard = class(TNotifierObject, IOTAProjectMenuItemCreatorNotifier)
@@ -38,6 +39,11 @@ type
   protected
     FProject: IOTAProject;
     FBossCommand: IBECommands;
+
+    procedure DoRefreshProject;
+
+    function BossInstalled: Boolean;
+    procedure VerifyBoss;
 
     function GetCaption: string;
     function GetChecked: Boolean;
@@ -172,6 +178,11 @@ end;
 
 { TBEContextMenu }
 
+function TBEContextMenu.BossInstalled: Boolean;
+begin
+  result := FileExists(ExtractFilePath(FProject.FileName) + BOSS_JSON);
+end;
+
 constructor TBEContextMenu.create(Project: IOTAProject);
 begin
   FProject := Project;
@@ -179,6 +190,11 @@ begin
   FEnabled := True;
   FChecked := False;
   FIsMultiSelectable := False;
+end;
+
+procedure TBEContextMenu.DoRefreshProject;
+begin
+  FProject.Refresh(True);
 end;
 
 procedure TBEContextMenu.Execute(const MenuContextList: IInterfaceList);
@@ -290,6 +306,12 @@ begin
   FVerb := Value;
 end;
 
+procedure TBEContextMenu.VerifyBoss;
+begin
+  if not BossInstalled then
+    raise Exception.Create('Boss is not installed. Use Boss Init...');
+end;
+
 { TBEContextMenuInstall }
 
 constructor TBEContextMenuInstall.create(Project: IOTAProject);
@@ -303,7 +325,8 @@ end;
 
 procedure TBEContextMenuInstall.Execute(const MenuContextList: IInterfaceList);
 begin
-  FBossCommand.Install;
+  VerifyBoss;
+  FBossCommand.Install(Self.DoRefreshProject);
 end;
 
 { TBEContextMenuBossInit }
@@ -316,11 +339,13 @@ begin
   FVerb := BOSS_INIT_VERB;
   FParent := BOSS_VERB;
 
-  FChecked := FileExists(ExtractFilePath(Project.FileName) + BOSS_JSON);
+  FChecked := BossInstalled;
 end;
 
 procedure TBEContextMenuBossInit.Execute(const MenuContextList: IInterfaceList);
 begin
+  if BossInstalled then
+    raise Exception.CreateFmt('Boss already installed.', []);
   FBossCommand.Init;
 end;
 
@@ -338,7 +363,8 @@ end;
 
 procedure TBEContextMenuUninstall.Execute(const MenuContextList: IInterfaceList);
 begin
-  FBossCommand.Uninstall;
+  VerifyBoss;
+  FBossCommand.Uninstall(Self.DoRefreshProject);
 end;
 
 { TBEContextMenuUpdate }
@@ -354,7 +380,8 @@ end;
 
 procedure TBEContextMenuUpdate.Execute(const MenuContextList: IInterfaceList);
 begin
-  FBossCommand.Update;
+  VerifyBoss;
+  FBossCommand.Update(Self.DoRefreshProject);
 end;
 
 { TBEContextMenuInstallSeparator }
@@ -392,7 +419,8 @@ end;
 
 procedure TBEContextMenuDependencies.Execute(const MenuContextList: IInterfaceList);
 begin
-  BEWizardForms := TBEWizardForms.create(nil, FBossCommand);
+  VerifyBoss;
+  BEWizardForms := TBEWizardForms.create(nil, FBossCommand, FProject);
   try
     BEWizardForms.ShowModal;
   finally

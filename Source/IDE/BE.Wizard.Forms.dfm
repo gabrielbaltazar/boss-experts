@@ -53,7 +53,7 @@ object BEWizardForms: TBEWizardForms
     BevelOuter = bvNone
     TabOrder = 3
     object btnInstall: TButton
-      Left = 105
+      Left = 8
       Top = 8
       Width = 91
       Height = 25
@@ -62,7 +62,7 @@ object BEWizardForms: TBEWizardForms
       OnClick = btnInstallClick
     end
     object btnUpdate: TButton
-      Left = 202
+      Left = 105
       Top = 8
       Width = 91
       Height = 25
@@ -71,7 +71,7 @@ object BEWizardForms: TBEWizardForms
       OnClick = btnUpdateClick
     end
     object btnUninstall: TButton
-      Left = 299
+      Left = 202
       Top = 8
       Width = 91
       Height = 25
@@ -79,22 +79,13 @@ object BEWizardForms: TBEWizardForms
       TabOrder = 2
       OnClick = btnUninstallClick
     end
-    object btnInit: TButton
-      Left = 8
-      Top = 8
-      Width = 91
-      Height = 25
-      Caption = 'Init'
-      TabOrder = 3
-      OnClick = btnInitClick
-    end
     object btnLogin: TButton
       Left = 536
       Top = 8
       Width = 91
       Height = 25
       Caption = 'Login'
-      TabOrder = 4
+      TabOrder = 3
       OnClick = btnLoginClick
     end
   end
@@ -106,6 +97,7 @@ object BEWizardForms: TBEWizardForms
     TabOrder = 0
     Items.Strings = (
       'github.com'
+      'gitlab.com'
       'bitbucket.org')
   end
   object edtDependency: TEdit

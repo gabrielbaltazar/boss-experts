@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
-  BE.Commands.Interfaces, Vcl.ComCtrls;
+  BE.Commands.Interfaces, Vcl.ComCtrls, ToolsAPI;
 
 type
   TBEWizardForms = class(TForm)
@@ -13,7 +13,6 @@ type
     btnInstall: TButton;
     btnUpdate: TButton;
     btnUninstall: TButton;
-    btnInit: TButton;
     Label3: TLabel;
     edtHostLogin: TComboBox;
     Label1: TLabel;
@@ -24,17 +23,19 @@ type
     btnLogin: TButton;
     Label4: TLabel;
     procedure FormShow(Sender: TObject);
-    procedure btnInitClick(Sender: TObject);
     procedure btnInstallClick(Sender: TObject);
     procedure btnUpdateClick(Sender: TObject);
     procedure btnUninstallClick(Sender: TObject);
     procedure btnLoginClick(Sender: TObject);
     procedure lstHistoryClick(Sender: TObject);
   private
+    FProject: IOTAProject;
     FBossCommand: IBECommands;
+
+    procedure DoRefresh;
     { Private declarations }
   public
-    constructor create(AOwner: TComponent; BossCommand: IBECommands); reintroduce;
+    constructor create(AOwner: TComponent; BossCommand: IBECommands; Project: IOTAProject); reintroduce;
     { Public declarations }
   end;
 
@@ -45,17 +46,9 @@ implementation
 
 {$R *.dfm}
 
-uses
-  ToolsAPI;
-
-procedure TBEWizardForms.btnInitClick(Sender: TObject);
-begin
-  FBossCommand.Init;
-end;
-
 procedure TBEWizardForms.btnInstallClick(Sender: TObject);
 begin
-  FBossCommand.Install(edtDependency.Text, edtVersion.Text);
+  FBossCommand.Install(edtDependency.Text, edtVersion.Text, Self.DoRefresh);
 end;
 
 procedure TBEWizardForms.btnLoginClick(Sender: TObject);
@@ -65,18 +58,25 @@ end;
 
 procedure TBEWizardForms.btnUninstallClick(Sender: TObject);
 begin
-  FBossCommand.Uninstall(edtDependency.Text);
+  FBossCommand.Uninstall(edtDependency.Text, Self.DoRefresh);
 end;
 
 procedure TBEWizardForms.btnUpdateClick(Sender: TObject);
 begin
-  FBossCommand.Update(edtDependency.Text, edtVersion.Text);
+  FBossCommand.Update(edtDependency.Text, edtVersion.Text, Self.DoRefresh);
 end;
 
-constructor TBEWizardForms.create(AOwner: TComponent; BossCommand: IBECommands);
+constructor TBEWizardForms.create(AOwner: TComponent; BossCommand: IBECommands; Project: IOTAProject);
 begin
   inherited create(AOwner);
   FBossCommand := BossCommand;
+  FProject := Project;
+end;
+
+procedure TBEWizardForms.DoRefresh;
+begin
+  if Assigned(FProject) then
+    FProject.Refresh(True);
 end;
 
 procedure TBEWizardForms.FormShow(Sender: TObject);
