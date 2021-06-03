@@ -32,10 +32,9 @@ type
     procedure lstHistoryClick(Sender: TObject);
   private
     FBossCommand: IBECommands;
-    FPath: String;
     { Private declarations }
   public
-    procedure Path(Value: String);
+    constructor create(AOwner: TComponent; BossCommand: IBECommands); reintroduce;
     { Public declarations }
   end;
 
@@ -74,6 +73,12 @@ begin
   FBossCommand.Update(edtDependency.Text, edtVersion.Text);
 end;
 
+constructor TBEWizardForms.create(AOwner: TComponent; BossCommand: IBECommands);
+begin
+  inherited create(AOwner);
+  FBossCommand := BossCommand;
+end;
+
 procedure TBEWizardForms.FormShow(Sender: TObject);
 var
   theme: IOTAIDEThemingServices250;
@@ -95,12 +100,6 @@ end;
 procedure TBEWizardForms.lstHistoryClick(Sender: TObject);
 begin
   edtDependency.Text := lstHistory.Items[lstHistory.ItemIndex];
-end;
-
-procedure TBEWizardForms.Path(Value: String);
-begin
-  FPath := Value;
-  FBossCommand := CreateBossCommand(FPath)
 end;
 
 end.

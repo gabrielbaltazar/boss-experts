@@ -5,7 +5,8 @@ interface
 uses
   ToolsAPI,
   Vcl.Menus,
-  Vcl.Dialogs,
+  BE.Constants,
+  BE.Commands.Interfaces,
   BE.Wizard.Forms,
   System.Classes,
   System.SysUtils;
@@ -22,10 +23,10 @@ type
     class function New: IOTAProjectMenuItemCreatorNotifier;
   end;
 
-  TBEContextMenuBoss = class(TNotifierObject, IOTALocalMenu, IOTAProjectManagerMenu)
+  TBEContextMenu = class(TNotifierObject, IOTALocalMenu, IOTAProjectManagerMenu)
   private
-    FProject: IOTAProject;
     FCaption: String;
+    FIsMultiSelectable: Boolean;
     FChecked: Boolean;
     FEnabled: Boolean;
     FHelpContext: Integer;
@@ -35,6 +36,9 @@ type
     FVerb: string;
 
   protected
+    FProject: IOTAProject;
+    FBossCommand: IBECommands;
+
     function GetCaption: string;
     function GetChecked: Boolean;
     function GetEnabled: Boolean;
@@ -53,13 +57,67 @@ type
     procedure SetVerb(const Value: string);
     function GetIsMultiSelectable: Boolean;
     procedure SetIsMultiSelectable(Value: Boolean);
-    procedure Execute(const MenuContextList: IInterfaceList); overload;
+    procedure Execute(const MenuContextList: IInterfaceList); virtual;
     function PreExecute(const MenuContextList: IInterfaceList): Boolean;
     function PostExecute(const MenuContextList: IInterfaceList): Boolean;
 
+    constructor create(Project: IOTAProject); virtual;
+    class function New(Project: IOTAProject): IOTAProjectManagerMenu;
+  end;
+
+  TBEContextMenuBoss = class(TBEContextMenu, IOTALocalMenu, IOTAProjectManagerMenu)
   public
-    constructor create(Project: IOTAProject; Position: Integer);
-    class function New(Project: IOTAProject; Position: Integer): IOTAProjectManagerMenu;
+    constructor create(Project: IOTAProject); override;
+  end;
+
+  TBEContextMenuBossInit = class(TBEContextMenu, IOTALocalMenu, IOTAProjectManagerMenu)
+  protected
+    procedure Execute(const MenuContextList: IInterfaceList); override;
+
+  public
+    constructor create(Project: IOTAProject); override;
+  end;
+
+  TBEContextMenuInstallSeparator = class(TBEContextMenu, IOTALocalMenu, IOTAProjectManagerMenu)
+  public
+    constructor create(Project: IOTAProject); override;
+  end;
+
+  TBEContextMenuInstall = class(TBEContextMenu, IOTALocalMenu, IOTAProjectManagerMenu)
+  protected
+    procedure Execute(const MenuContextList: IInterfaceList); override;
+
+  public
+    constructor create(Project: IOTAProject); override;
+  end;
+
+  TBEContextMenuUpdate = class(TBEContextMenu, IOTALocalMenu, IOTAProjectManagerMenu)
+  protected
+    procedure Execute(const MenuContextList: IInterfaceList); override;
+
+  public
+    constructor create(Project: IOTAProject); override;
+  end;
+
+  TBEContextMenuUninstall = class(TBEContextMenu, IOTALocalMenu, IOTAProjectManagerMenu)
+  protected
+    procedure Execute(const MenuContextList: IInterfaceList); override;
+
+  public
+    constructor create(Project: IOTAProject); override;
+  end;
+
+  TBEContextMenuDependenciesSeparator = class(TBEContextMenu, IOTALocalMenu, IOTAProjectManagerMenu)
+  public
+    constructor create(Project: IOTAProject); override;
+  end;
+
+  TBEContextMenuDependencies = class(TBEContextMenu, IOTALocalMenu, IOTAProjectManagerMenu)
+  protected
+    procedure Execute(const MenuContextList: IInterfaceList); override;
+
+  public
+    constructor create(Project: IOTAProject); override;
   end;
 
 var
@@ -81,28 +139,20 @@ procedure TBEContextMenuWizard.AddMenu(const Project: IOTAProject;
                                        const IdentList: TStrings;
                                        const ProjectManagerMenuList: IInterfaceList;
                                              IsMultiSelect: Boolean);
-var
-  position: Integer;
-  i: Integer;
-  projectMenu: IOTAProjectManagerMenu;
 begin
   if (IdentList.IndexOf(sProjectContainer) < 0) or
      (not Assigned(ProjectManagerMenuList))
   then
     Exit;
 
-  for i := 0 to Pred(ProjectManagerMenuList.Count) do
-  begin
-    projectMenu := (ProjectManagerMenuList.Items[i] as IOTAProjectManagerMenu);
-
-    if projectMenu.Verb = 'Compare' then
-    begin
-      position := projectMenu.Position + 1;
-      Break;
-    end;
-  end;
-
-  ProjectManagerMenuList.Add(TBEContextMenuBoss.New(Project, position));
+  ProjectManagerMenuList.Add(TBEContextMenuBoss.New(Project));
+  ProjectManagerMenuList.Add(TBEContextMenuBossInit.New(Project));
+  ProjectManagerMenuList.Add(TBEContextMenuInstallSeparator.New(Project));
+  ProjectManagerMenuList.Add(TBEContextMenuInstall.New(Project));
+  ProjectManagerMenuList.Add(TBEContextMenuUpdate.New(Project));
+  ProjectManagerMenuList.Add(TBEContextMenuUninstall.New(Project));
+  ProjectManagerMenuList.Add(TBEContextMenuDependenciesSeparator.New(Project));
+  ProjectManagerMenuList.Add(TBEContextMenuDependencies.New(Project));
 end;
 
 class function TBEContextMenuWizard.New: IOTAProjectMenuItemCreatorNotifier;
@@ -112,132 +162,242 @@ end;
 
 { TBEContextMenuBoss }
 
-constructor TBEContextMenuBoss.create(Project: IOTAProject; Position: Integer);
+constructor TBEContextMenuBoss.create(Project: IOTAProject);
 begin
-  FPosition := Position;
-  FProject  := Project;
-  FEnabled  := True;
-  FCaption  := 'Boss';
-  FParent := '';
-
+  inherited create(Project);
+  FPosition := BOSS_POSITION;
+  FCaption  := BOSS_CAPTION;
+  FVerb     := BOSS_VERB;
 end;
 
-procedure TBEContextMenuBoss.Execute(const MenuContextList: IInterfaceList);
+{ TBEContextMenu }
+
+constructor TBEContextMenu.create(Project: IOTAProject);
 begin
-  BEWizardForms := TBEWizardForms.Create(nil);
-  try
-    BEWizardForms.Path(ExtractFilePath( FProject.FileName ));
-    BEWizardForms.ShowModal;
-  finally
-    BEWizardForms.Free;
-  end;
+  FProject := Project;
+  FBossCommand := CreateBossCommand(ExtractFilePath(FProject.FileName));
+  FEnabled := True;
+  FChecked := False;
+  FIsMultiSelectable := False;
 end;
 
-function TBEContextMenuBoss.GetCaption: string;
+procedure TBEContextMenu.Execute(const MenuContextList: IInterfaceList);
+begin
+end;
+
+function TBEContextMenu.GetCaption: string;
 begin
   result := FCaption;
 end;
 
-function TBEContextMenuBoss.GetChecked: Boolean;
+function TBEContextMenu.GetChecked: Boolean;
 begin
   result := FChecked;
 end;
 
-function TBEContextMenuBoss.GetEnabled: Boolean;
+function TBEContextMenu.GetEnabled: Boolean;
 begin
   result := FEnabled;
 end;
 
-function TBEContextMenuBoss.GetHelpContext: Integer;
+function TBEContextMenu.GetHelpContext: Integer;
 begin
   result := FHelpContext;
 end;
 
-function TBEContextMenuBoss.GetIsMultiSelectable: Boolean;
+function TBEContextMenu.GetIsMultiSelectable: Boolean;
 begin
-  Result := False;
+  Result := FIsMultiSelectable;
 end;
 
-function TBEContextMenuBoss.GetName: string;
+function TBEContextMenu.GetName: string;
 begin
   result := FName;
 end;
 
-function TBEContextMenuBoss.GetParent: string;
+function TBEContextMenu.GetParent: string;
 begin
   result := FParent;
 end;
 
-function TBEContextMenuBoss.GetPosition: Integer;
+function TBEContextMenu.GetPosition: Integer;
 begin
   result := FPosition;
 end;
 
-function TBEContextMenuBoss.GetVerb: string;
+function TBEContextMenu.GetVerb: string;
 begin
   result := FVerb;
 end;
 
-class function TBEContextMenuBoss.New(Project: IOTAProject; Position: Integer): IOTAProjectManagerMenu;
+class function TBEContextMenu.New(Project: IOTAProject): IOTAProjectManagerMenu;
 begin
-  result := Self.create(Project, Position);
+  result := Self.create(Project);
 end;
 
-function TBEContextMenuBoss.PostExecute(const MenuContextList: IInterfaceList): Boolean;
+function TBEContextMenu.PostExecute(const MenuContextList: IInterfaceList): Boolean;
 begin
-  result := True;
-  ShowMessage('oi');
-end;
-
-function TBEContextMenuBoss.PreExecute(const MenuContextList: IInterfaceList): Boolean;
-begin
-  ShowMessage('oi');
   result := True;
 end;
 
-procedure TBEContextMenuBoss.SetCaption(const Value: string);
+function TBEContextMenu.PreExecute(const MenuContextList: IInterfaceList): Boolean;
+begin
+  result := True;
+end;
+
+procedure TBEContextMenu.SetCaption(const Value: string);
 begin
   FCaption := Value;
 end;
 
-procedure TBEContextMenuBoss.SetChecked(Value: Boolean);
+procedure TBEContextMenu.SetChecked(Value: Boolean);
 begin
   FChecked := Value;
 end;
 
-procedure TBEContextMenuBoss.SetEnabled(Value: Boolean);
+procedure TBEContextMenu.SetEnabled(Value: Boolean);
 begin
   FEnabled := Value;
 end;
 
-procedure TBEContextMenuBoss.SetHelpContext(Value: Integer);
+procedure TBEContextMenu.SetHelpContext(Value: Integer);
 begin
   FHelpContext := Value;
 end;
 
-procedure TBEContextMenuBoss.SetIsMultiSelectable(Value: Boolean);
+procedure TBEContextMenu.SetIsMultiSelectable(Value: Boolean);
 begin
-
+  FIsMultiSelectable := Value;
 end;
 
-procedure TBEContextMenuBoss.SetName(const Value: string);
+procedure TBEContextMenu.SetName(const Value: string);
 begin
   FName := Value;
 end;
 
-procedure TBEContextMenuBoss.SetParent(const Value: string);
+procedure TBEContextMenu.SetParent(const Value: string);
 begin
   FParent := Value;
 end;
 
-procedure TBEContextMenuBoss.SetPosition(Value: Integer);
+procedure TBEContextMenu.SetPosition(Value: Integer);
 begin
   FPosition := Value;
 end;
 
-procedure TBEContextMenuBoss.SetVerb(const Value: string);
+procedure TBEContextMenu.SetVerb(const Value: string);
 begin
   FVerb := Value;
+end;
+
+{ TBEContextMenuInstall }
+
+constructor TBEContextMenuInstall.create(Project: IOTAProject);
+begin
+  inherited create(Project);
+  FPosition := BOSS_INSTALL_POSITION;
+  FCaption := BOSS_INSTALL_CAPTION;
+  FVerb := BOSS_INSTALL_VERB;
+  FParent := BOSS_VERB;
+end;
+
+procedure TBEContextMenuInstall.Execute(const MenuContextList: IInterfaceList);
+begin
+  FBossCommand.Install;
+end;
+
+{ TBEContextMenuBossInit }
+
+constructor TBEContextMenuBossInit.create(Project: IOTAProject);
+begin
+  inherited create(Project);
+  FCaption := BOSS_INIT_CAPTION;
+  FPosition:= BOSS_INIT_POSITION;
+  FVerb := BOSS_INIT_VERB;
+  FParent := BOSS_VERB;
+
+  FChecked := FileExists(ExtractFilePath(Project.FileName) + BOSS_JSON);
+end;
+
+procedure TBEContextMenuBossInit.Execute(const MenuContextList: IInterfaceList);
+begin
+  FBossCommand.Init;
+end;
+
+{ TBEContextMenuUninstall }
+
+constructor TBEContextMenuUninstall.create(Project: IOTAProject);
+begin
+  inherited create(Project);
+  FCaption := BOSS_UNINSTALL_CAPTION;
+  FPosition:= BOSS_UNINSTALL_POSITION;
+  FVerb := BOSS_UNINSTALL_VERB;
+  FParent := BOSS_VERB;
+
+end;
+
+procedure TBEContextMenuUninstall.Execute(const MenuContextList: IInterfaceList);
+begin
+  FBossCommand.Uninstall;
+end;
+
+{ TBEContextMenuUpdate }
+
+constructor TBEContextMenuUpdate.create(Project: IOTAProject);
+begin
+  inherited create(Project);
+  FCaption := BOSS_UPDATE_CAPTION;
+  FPosition:= BOSS_UPDATE_POSITION;
+  FVerb := BOSS_UPDATE_VERB;
+  FParent := BOSS_VERB;
+end;
+
+procedure TBEContextMenuUpdate.Execute(const MenuContextList: IInterfaceList);
+begin
+  FBossCommand.Update;
+end;
+
+{ TBEContextMenuInstallSeparator }
+
+constructor TBEContextMenuInstallSeparator.create(Project: IOTAProject);
+begin
+  inherited create(Project);
+  FCaption := '-';
+  FVerb := '-';
+  FPosition := BOSS_INSTALL_SEPARATOR_POSITION;
+  FParent := BOSS_VERB;
+end;
+
+{ TBEContextMenuDependenciesSeparator }
+
+constructor TBEContextMenuDependenciesSeparator.create(Project: IOTAProject);
+begin
+  inherited create(Project);
+  FCaption := '-';
+  FVerb := '-';
+  FPosition := BOSS_DEPENDENCIES_SEPARATOR_POSITION;
+  FParent := BOSS_VERB;
+end;
+
+{ TBEContextMenuDependencies }
+
+constructor TBEContextMenuDependencies.create(Project: IOTAProject);
+begin
+  inherited create(Project);
+  FCaption := BOSS_DEPENDENCIES_CAPTION;
+  FVerb := BOSS_DEPENDENCIES_VERB;
+  FPosition := BOSS_DEPENDENCIES_POSITION;
+  FParent := BOSS_VERB;
+end;
+
+procedure TBEContextMenuDependencies.Execute(const MenuContextList: IInterfaceList);
+begin
+  BEWizardForms := TBEWizardForms.create(nil, FBossCommand);
+  try
+    BEWizardForms.ShowModal;
+  finally
+    BEWizardForms.Free;
+  end;
 end;
 
 initialization
