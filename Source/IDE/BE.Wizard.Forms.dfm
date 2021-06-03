@@ -4,7 +4,7 @@ object BEWizardForms: TBEWizardForms
   BorderStyle = bsDialog
   Caption = 'Boss Experts'
   ClientHeight = 309
-  ClientWidth = 645
+  ClientWidth = 654
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -25,33 +25,40 @@ object BEWizardForms: TBEWizardForms
   end
   object Label1: TLabel
     Left = 8
-    Top = 53
+    Top = 50
     Width = 60
     Height = 13
     Caption = 'Dependency'
   end
   object Label2: TLabel
-    Left = 8
-    Top = 100
+    Left = 256
+    Top = 50
     Width = 35
     Height = 13
     Caption = 'Version'
   end
   object Label4: TLabel
-    Left = 299
+    Left = 333
     Top = 5
     Width = 34
     Height = 13
     Caption = 'History'
   end
+  object Label5: TLabel
+    Left = 8
+    Top = 96
+    Width = 67
+    Height = 13
+    Caption = 'Dependencies'
+  end
   object pnlBottom: TPanel
     Left = 0
     Top = 268
-    Width = 645
+    Width = 654
     Height = 41
     Align = alBottom
     BevelOuter = bvNone
-    TabOrder = 3
+    TabOrder = 6
     object btnInstall: TButton
       Left = 8
       Top = 8
@@ -80,7 +87,7 @@ object BEWizardForms: TBEWizardForms
       OnClick = btnUninstallClick
     end
     object btnLogin: TButton
-      Left = 536
+      Left = 555
       Top = 8
       Width = 91
       Height = 25
@@ -92,45 +99,54 @@ object BEWizardForms: TBEWizardForms
   object edtHostLogin: TComboBox
     Left = 8
     Top = 23
-    Width = 259
+    Width = 313
     Height = 21
+    ItemIndex = 1
     TabOrder = 0
+    Text = 'github.com'
     Items.Strings = (
+      'bitbucket.org'
       'github.com'
-      'gitlab.com'
-      'bitbucket.org')
+      'gitlab.com')
   end
   object edtDependency: TEdit
     Left = 8
-    Top = 71
-    Width = 259
+    Top = 68
+    Width = 242
     Height = 21
     TabOrder = 1
   end
   object edtVersion: TEdit
-    Left = 8
-    Top = 119
-    Width = 113
+    Left = 256
+    Top = 68
+    Width = 65
     Height = 21
     TabOrder = 2
   end
   object lstHistory: TListBox
-    Left = 299
-    Top = 23
-    Width = 328
-    Height = 239
+    Left = 333
+    Top = 50
+    Width = 313
+    Height = 212
     ItemHeight = 13
-    Items.Strings = (
-      'horse'
-      'horse-basic-auth'
-      'horse-compression'
-      'horse-cors'
-      'handle-exception'
-      'horse-jwt'
-      'horse-logger'
-      'horse-octet-stream'
-      'jhonson')
-    TabOrder = 4
+    TabOrder = 5
     OnClick = lstHistoryClick
+  end
+  object lstDependencies: TListBox
+    Left = 8
+    Top = 111
+    Width = 313
+    Height = 151
+    ItemHeight = 13
+    TabOrder = 3
+    OnClick = lstDependenciesClick
+  end
+  object edtSearch: TEdit
+    Left = 333
+    Top = 23
+    Width = 313
+    Height = 21
+    TabOrder = 4
+    OnChange = edtSearchChange
   end
 end

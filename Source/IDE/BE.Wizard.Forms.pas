@@ -5,7 +5,7 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
-  BE.Commands.Interfaces, Vcl.ComCtrls, ToolsAPI, BE.Model;
+  BE.Commands.Interfaces, Vcl.ComCtrls, ToolsAPI, BE.Model, Vcl.Menus;
 
 type
   TBEWizardForms = class(TForm)
@@ -22,19 +22,31 @@ type
     lstHistory: TListBox;
     btnLogin: TButton;
     Label4: TLabel;
+    lstDependencies: TListBox;
+    Label5: TLabel;
+    edtSearch: TEdit;
     procedure FormShow(Sender: TObject);
     procedure btnInstallClick(Sender: TObject);
     procedure btnUpdateClick(Sender: TObject);
     procedure btnUninstallClick(Sender: TObject);
     procedure btnLoginClick(Sender: TObject);
     procedure lstHistoryClick(Sender: TObject);
+    procedure lstDependenciesClick(Sender: TObject);
+    procedure edtSearchChange(Sender: TObject);
   private
     FProject: IOTAProject;
     FBossCommand: IBECommands;
 
     procedure DoRefresh;
+    procedure DoInstallDependency;
+    procedure DoUninstallDependency;
 
-    function GetDependency: TBEModelDependency;
+    procedure LoadHistory;
+    procedure LoadDependencies;
+
+    function GetDependency: TBEModelDependency; overload;
+    function GetDependency(Text: String): TBEModelDependency; overload;
+    procedure SaveHistoryDependency;
     { Private declarations }
   public
     constructor create(AOwner: TComponent; BossCommand: IBECommands; Project: IOTAProject); reintroduce;
@@ -54,7 +66,10 @@ var
 begin
   dependency := GetDependency;
   try
-    FBossCommand.Install(dependency, Self.DoRefresh);
+    if dependency.name.Trim.IsEmpty then
+      Exit;
+
+    FBossCommand.Install(dependency, Self.DoInstallDependency);
   finally
     dependency.Free;
   end;
@@ -69,9 +84,12 @@ procedure TBEWizardForms.btnUninstallClick(Sender: TObject);
 var
   dependency: TBEModelDependency;
 begin
-  dependency := GetDependency;
+  if lstDependencies.ItemIndex < 0 then
+    Exit;
+
+  dependency := GetDependency(lstDependencies.Items[lstDependencies.ItemIndex]);
   try
-    FBossCommand.Uninstall(dependency, Self.DoRefresh);
+    FBossCommand.Uninstall(dependency, Self.DoUninstallDependency);
   finally
     dependency.Free;
   end;
@@ -83,7 +101,10 @@ var
 begin
   dependency := GetDependency;
   try
-    FBossCommand.Update(dependency, Self.DoRefresh);
+    if dependency.name.Trim.IsEmpty then
+      Exit;
+
+    FBossCommand.Update(dependency, Self.DoInstallDependency);
   finally
     dependency.Free;
   end;
@@ -96,10 +117,27 @@ begin
   FProject := Project;
 end;
 
+procedure TBEWizardForms.DoInstallDependency;
+begin
+  DoRefresh;
+  SaveHistoryDependency;
+end;
+
 procedure TBEWizardForms.DoRefresh;
 begin
   if Assigned(FProject) then
     FProject.Refresh(True);
+end;
+
+procedure TBEWizardForms.DoUninstallDependency;
+begin
+  DoRefresh;
+  LoadDependencies;
+end;
+
+procedure TBEWizardForms.edtSearchChange(Sender: TObject);
+begin
+  Self.LoadHistory;
 end;
 
 procedure TBEWizardForms.FormShow(Sender: TObject);
@@ -107,6 +145,9 @@ var
   theme: IOTAIDEThemingServices250;
   i: Integer;
 begin
+  LoadHistory;
+  LoadDependencies;
+
   theme := (BorlandIDEServices as IOTAIDEThemingServices250);
   theme.RegisterFormClass(TBEWizardForms);
 
@@ -120,14 +161,109 @@ begin
   end;
 end;
 
+function TBEWizardForms.GetDependency(Text: String): TBEModelDependency;
+var
+  name: string;
+  version: string;
+begin
+  name := Text;
+  version := EmptyStr;
+  if name.Contains(':') then
+  begin
+    name := Copy(Text, 1, Pos(':', Text) - 1);
+    version:= Copy(Text, Pos(':', Text) + 1, 100).Trim;
+  end;
+
+  result := TBEModelDependency.create(name, version);
+end;
+
 function TBEWizardForms.GetDependency: TBEModelDependency;
 begin
   result := TBEModelDependency.create(edtDependency.Text, edtVersion.Text);
 end;
 
-procedure TBEWizardForms.lstHistoryClick(Sender: TObject);
+procedure TBEWizardForms.LoadDependencies;
+var
+  Model: TBEModel;
+  i: Integer;
 begin
-  edtDependency.Text := lstHistory.Items[lstHistory.ItemIndex];
+  Model := TBEModel.LoadDependencies(FProject);
+  try
+    lstDependencies.Items.Clear;
+    for i := 0 to Pred(Model.dependencies.Count) do
+      lstDependencies.Items.Add(Model.dependencies[i].ToString);
+  finally
+    Model.Free;
+  end;
+end;
+
+procedure TBEWizardForms.LoadHistory;
+var
+  Model: TBEModel;
+  i: Integer;
+  search: string;
+  dependency: string;
+begin
+  Model := TBEModel.LoadHistory;
+  search := LowerCase(edtSearch.Text).Trim;
+  try
+    lstHistory.Items.Clear;
+    for i := 0 to Pred(Model.dependencies.Count) do
+    begin
+      dependency := Model.dependencies[i].ToString;
+
+      if (search.IsEmpty) or
+         (dependency.Contains(search))
+      then
+        lstHistory.Items.Add(dependency);
+    end;
+  finally
+    Model.Free;
+  end;
+end;
+
+procedure TBEWizardForms.lstDependenciesClick(Sender: TObject);
+var
+  dependency: TBEModelDependency;
+begin
+  if lstDependencies.ItemIndex < 0 then
+    Exit;
+
+  dependency := GetDependency(lstDependencies.Items[lstDependencies.ItemIndex]);
+  try
+    edtDependency.Text := dependency.name;
+    edtVersion.Text := dependency.version;
+  finally
+    dependency.Free;
+  end;
+end;
+
+procedure TBEWizardForms.lstHistoryClick(Sender: TObject);
+var
+  dependency: TBEModelDependency;
+begin
+  if lstHistory.ItemIndex < 0 then
+    Exit;
+
+  dependency := GetDependency(lstHistory.Items[lstHistory.ItemIndex]);
+  try
+    edtDependency.Text := dependency.name;
+    edtVersion.Text := dependency.version;
+  finally
+    dependency.Free;
+  end;
+end;
+
+procedure TBEWizardForms.SaveHistoryDependency;
+var
+  dependency: TBEModelDependency;
+begin
+  dependency := GetDependency;
+  try
+    dependency.SaveHistory;
+  finally
+    dependency.Free;
+  end;
 end;
 
 end.
