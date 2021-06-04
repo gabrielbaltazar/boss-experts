@@ -121,6 +121,7 @@ procedure TBEWizardForms.DoInstallDependency;
 begin
   DoRefresh;
   SaveHistoryDependency;
+  LoadDependencies;
 end;
 
 procedure TBEWizardForms.DoRefresh;
