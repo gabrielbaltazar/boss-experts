@@ -141,7 +141,7 @@ begin
 end;
 
 procedure TBEWizardForms.FormShow(Sender: TObject);
-{$IF CompilerVersion > 28.0}
+{$IF CompilerVersion > 30.0}
 var
   theme: IOTAIDEThemingServices250;
   i: Integer;
@@ -150,7 +150,7 @@ begin
   LoadHistory;
   LoadDependencies;
 
-  {$IF CompilerVersion > 28.0}
+  {$IF CompilerVersion > 30.0}
   theme := (BorlandIDEServices as IOTAIDEThemingServices250);
   theme.RegisterFormClass(TBEWizardForms);
 
