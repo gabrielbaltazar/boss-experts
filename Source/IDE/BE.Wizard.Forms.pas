@@ -141,13 +141,16 @@ begin
 end;
 
 procedure TBEWizardForms.FormShow(Sender: TObject);
+{$IF CompilerVersion > 26.0}
 var
   theme: IOTAIDEThemingServices250;
   i: Integer;
+{$ENDIF}
 begin
   LoadHistory;
   LoadDependencies;
 
+  {$IF CompilerVersion > 26.0}
   theme := (BorlandIDEServices as IOTAIDEThemingServices250);
   theme.RegisterFormClass(TBEWizardForms);
 
@@ -159,6 +162,7 @@ begin
     if Components[i] is TComboBox then
       theme.ApplyTheme(TComboBox(Components[i]));
   end;
+  {$ENDIF}
 end;
 
 function TBEWizardForms.GetDependency(Text: String): TBEModelDependency;

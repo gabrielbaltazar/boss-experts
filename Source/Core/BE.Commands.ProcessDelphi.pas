@@ -6,8 +6,11 @@ uses
   dprocess,
   BE.Model,
   BE.Commands.Interfaces,
-  System.SysUtils,
-  System.Threading;
+  {$IF CompilerVersion > 26.0}
+  System.Threading,
+  {$ENDIF}
+  System.Classes,
+  System.SysUtils;
 
 type TBECommandsProcessDelphi = class(TInterfacedObject, IBECommands)
 
@@ -85,6 +88,9 @@ end;
 
 procedure TBECommandsProcessDelphi.RunCommand(ACommand: String; AComplete: TProc);
 var
+{$IF CompilerVersion <= 26.0}
+  threadCommand: TThread;
+{$ENDIF}
   proc: TProc;
 begin
   proc :=
@@ -106,7 +112,18 @@ begin
   if not FAsyncMode then
     proc
   else
+  begin
+    {$IF CompilerVersion <= 26.0}
+    threadCommand := TThread.CreateAnonymousThread(
+      procedure
+      begin
+        proc;
+      end);
+    threadCommand.Start;
+    {$ELSE}
     TTask.Run(proc);
+    {$ENDIF}
+  end;
 end;
 
 function TBECommandsProcessDelphi.Uninstall(AComplete: TProc = nil): IBECommands;

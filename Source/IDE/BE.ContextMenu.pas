@@ -9,8 +9,7 @@ uses
   BE.Commands.Interfaces,
   BE.Wizard.Forms,
   System.Classes,
-  System.SysUtils,
-  System.Threading;
+  System.SysUtils;
 
 type
   TBEContextMenuWizard = class(TNotifierObject, IOTAProjectMenuItemCreatorNotifier)
