@@ -5,7 +5,7 @@
     "homepage": "",
     "mainsrc": "Source",
     "projects": [
-        "BossExperts.dproj"
+        "Source/BossExperts.dproj"
     ],
     "dependencies": {}
 }
