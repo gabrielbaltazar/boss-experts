@@ -41,7 +41,6 @@ type
 
     procedure DoRefreshProject;
 
-    function BossInstalled: Boolean;
     procedure VerifyBoss;
 
     function GetCaption: string;
@@ -177,11 +176,6 @@ end;
 
 { TBEContextMenu }
 
-function TBEContextMenu.BossInstalled: Boolean;
-begin
-  result := FileExists(ExtractFilePath(FProject.FileName) + BOSS_JSON);
-end;
-
 constructor TBEContextMenu.create(Project: IOTAProject);
 begin
   FProject := Project;
@@ -307,7 +301,7 @@ end;
 
 procedure TBEContextMenu.VerifyBoss;
 begin
-  if not BossInstalled then
+  if not FBossCommand.BossInstalled then
     raise Exception.Create('Boss is not installed. Use Boss Init...');
 end;
 
@@ -338,12 +332,12 @@ begin
   FVerb := BOSS_INIT_VERB;
   FParent := BOSS_VERB;
 
-  FChecked := BossInstalled;
+  FChecked := FBossCommand.BossInstalled;
 end;
 
 procedure TBEContextMenuBossInit.Execute(const MenuContextList: IInterfaceList);
 begin
-  if BossInstalled then
+  if FBossCommand.BossInstalled then
     raise Exception.CreateFmt('Boss already installed.', []);
   FBossCommand.Init;
 end;
