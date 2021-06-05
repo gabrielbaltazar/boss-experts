@@ -7,6 +7,7 @@ uses
   System.Generics.Collections,
   System.SysUtils,
   System.IniFiles,
+  BE.Constants,
   BE.Helpers.Json,
   ToolsAPI;
 
@@ -108,7 +109,7 @@ var
 begin
   result := TBEModel.create;
   try
-    jsonFile := ExtractFilePath(Project.FileName) + 'boss.json';
+    jsonFile := ExtractFilePath(Project.FileName) + BOSS_JSON;
     if not FileExists(jsonFile) then
       exit;
 
