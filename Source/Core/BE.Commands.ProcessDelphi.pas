@@ -6,6 +6,7 @@ uses
   dprocess,
   BE.Model,
   BE.Commands.Interfaces,
+  BE.Constants,
   {$IF CompilerVersion > 26.0}
   System.Threading,
   {$ENDIF}
@@ -35,6 +36,7 @@ type TBECommandsProcessDelphi = class(TInterfacedObject, IBECommands)
     function Uninstall(AComplete: TProc = nil): IBECommands; overload;
     function Uninstall(ADependency: TBEModelDependency; AComplete: TProc = nil): IBECommands; overload;
 
+    function BossInstalled: Boolean;
   public
     constructor create(Path: string);
     class function New(Path: string): IBECommands;
@@ -48,6 +50,11 @@ function TBECommandsProcessDelphi.AsyncMode(Value: Boolean): IBECommands;
 begin
   result := Self;
   FAsyncMode := Value;
+end;
+
+function TBECommandsProcessDelphi.BossInstalled: Boolean;
+begin
+  result := FileExists(FPath + BOSS_JSON);
 end;
 
 constructor TBECommandsProcessDelphi.create(Path: string);

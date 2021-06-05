@@ -1,0 +1,47 @@
+package BossExperts;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS OFF}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE RELEASE}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'Boss Experts'}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  designide;
+
+contains
+  dpipes in 'Source\Third\dpipes.pas',
+  dprocess in 'Source\Third\dprocess.pas',
+  BE.Wizard.Forms in 'Source\IDE\BE.Wizard.Forms.pas' {BEWizardForms},
+  BE.Commands.Interfaces in 'Source\Core\BE.Commands.Interfaces.pas',
+  BE.Commands.ProcessDelphi in 'Source\Core\BE.Commands.ProcessDelphi.pas',
+  BE.ContextMenu in 'Source\IDE\BE.ContextMenu.pas',
+  BE.Registry in 'Source\IDE\BE.Registry.pas',
+  BE.Constants in 'Source\Core\BE.Constants.pas',
+  BE.Model in 'Source\Core\BE.Model.pas',
+  BE.Helpers.Json in 'Source\Helpers\BE.Helpers.Json.pas';
+
+end.

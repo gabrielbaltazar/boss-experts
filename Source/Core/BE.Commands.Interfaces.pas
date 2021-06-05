@@ -22,6 +22,8 @@ type
 
     function Uninstall(AComplete: TProc = nil): IBECommands; overload;
     function Uninstall(ADependency: TBEModelDependency; AComplete: TProc = nil): IBECommands; overload;
+
+    function BossInstalled: Boolean;
   end;
 
 function CreateBossCommand(Path: String): IBECommands;
