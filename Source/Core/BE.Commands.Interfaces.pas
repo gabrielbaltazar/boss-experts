@@ -23,6 +23,8 @@ type
     function Uninstall(AComplete: TProc = nil): IBECommands; overload;
     function Uninstall(ADependency: TBEModelDependency; AComplete: TProc = nil): IBECommands; overload;
 
+    function RemoveCache(AComplete: TProc = nil): IBECommands;
+
     function BossInstalled: Boolean;
   end;
 

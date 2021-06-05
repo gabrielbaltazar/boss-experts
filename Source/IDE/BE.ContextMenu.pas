@@ -82,11 +82,6 @@ type
     constructor create(Project: IOTAProject); override;
   end;
 
-  TBEContextMenuInstallSeparator = class(TBEContextMenu, IOTALocalMenu, IOTAProjectManagerMenu)
-  public
-    constructor create(Project: IOTAProject); override;
-  end;
-
   TBEContextMenuInstall = class(TBEContextMenu, IOTALocalMenu, IOTAProjectManagerMenu)
   protected
     procedure Execute(const MenuContextList: IInterfaceList); override;
@@ -111,17 +106,26 @@ type
     constructor create(Project: IOTAProject); override;
   end;
 
-  TBEContextMenuDependenciesSeparator = class(TBEContextMenu, IOTALocalMenu, IOTAProjectManagerMenu)
-  public
-    constructor create(Project: IOTAProject); override;
-  end;
-
   TBEContextMenuDependencies = class(TBEContextMenu, IOTALocalMenu, IOTAProjectManagerMenu)
   protected
     procedure Execute(const MenuContextList: IInterfaceList); override;
 
   public
     constructor create(Project: IOTAProject); override;
+  end;
+
+  TBEContextMenuCacheRemove = class(TBEContextMenu, IOTALocalMenu, IOTAProjectManagerMenu)
+  protected
+    procedure Execute(const MenuContextList: IInterfaceList); override;
+
+  public
+    constructor create(Project: IOTAProject); override;
+  end;
+
+  TBEContextMenuSeparator = class(TBEContextMenu, IOTALocalMenu, IOTAProjectManagerMenu)
+  public
+    constructor create(Project: IOTAProject; Position: Integer); reintroduce;
+    class function New(Project: IOTAProject; Position: Integer): IOTAProjectManagerMenu;
   end;
 
 var
@@ -151,12 +155,14 @@ begin
 
   ProjectManagerMenuList.Add(TBEContextMenuBoss.New(Project));
   ProjectManagerMenuList.Add(TBEContextMenuBossInit.New(Project));
-  ProjectManagerMenuList.Add(TBEContextMenuInstallSeparator.New(Project));
+  ProjectManagerMenuList.Add(TBEContextMenuSeparator.New(Project, BOSS_INSTALL_SEPARATOR_POSITION));
   ProjectManagerMenuList.Add(TBEContextMenuInstall.New(Project));
   ProjectManagerMenuList.Add(TBEContextMenuUpdate.New(Project));
   ProjectManagerMenuList.Add(TBEContextMenuUninstall.New(Project));
-  ProjectManagerMenuList.Add(TBEContextMenuDependenciesSeparator.New(Project));
+  ProjectManagerMenuList.Add(TBEContextMenuSeparator.New(Project, BOSS_DEPENDENCIES_SEPARATOR_POSITION));
   ProjectManagerMenuList.Add(TBEContextMenuDependencies.New(Project));
+  ProjectManagerMenuList.Add(TBEContextMenuSeparator.New(Project, BOSS_CACHE_SEPARATOR_POSITION));
+  ProjectManagerMenuList.Add(TBEContextMenuCacheRemove.New(Project));
 end;
 
 class function TBEContextMenuWizard.New: IOTAProjectMenuItemCreatorNotifier;
@@ -171,7 +177,7 @@ begin
   inherited create(Project);
   FPosition := BOSS_POSITION;
   FCaption  := BOSS_CAPTION;
-  FVerb     := BOSS_VERB;
+  FVerb     := BOSS_CAPTION;
 end;
 
 { TBEContextMenu }
@@ -312,8 +318,8 @@ begin
   inherited create(Project);
   FPosition := BOSS_INSTALL_POSITION;
   FCaption := BOSS_INSTALL_CAPTION;
-  FVerb := BOSS_INSTALL_VERB;
-  FParent := BOSS_VERB;
+  FVerb := BOSS_INSTALL_CAPTION;
+  FParent := BOSS_CAPTION;
 end;
 
 procedure TBEContextMenuInstall.Execute(const MenuContextList: IInterfaceList);
@@ -329,8 +335,8 @@ begin
   inherited create(Project);
   FCaption := BOSS_INIT_CAPTION;
   FPosition:= BOSS_INIT_POSITION;
-  FVerb := BOSS_INIT_VERB;
-  FParent := BOSS_VERB;
+  FVerb := BOSS_INIT_CAPTION;
+  FParent := BOSS_CAPTION;
 
   FChecked := FBossCommand.BossInstalled;
 end;
@@ -349,8 +355,8 @@ begin
   inherited create(Project);
   FCaption := BOSS_UNINSTALL_CAPTION;
   FPosition:= BOSS_UNINSTALL_POSITION;
-  FVerb := BOSS_UNINSTALL_VERB;
-  FParent := BOSS_VERB;
+  FVerb := BOSS_UNINSTALL_CAPTION;
+  FParent := BOSS_CAPTION;
 
 end;
 
@@ -367,8 +373,8 @@ begin
   inherited create(Project);
   FCaption := BOSS_UPDATE_CAPTION;
   FPosition:= BOSS_UPDATE_POSITION;
-  FVerb := BOSS_UPDATE_VERB;
-  FParent := BOSS_VERB;
+  FVerb := BOSS_UPDATE_CAPTION;
+  FParent := BOSS_CAPTION;
 end;
 
 procedure TBEContextMenuUpdate.Execute(const MenuContextList: IInterfaceList);
@@ -377,37 +383,15 @@ begin
   FBossCommand.Update(Self.DoRefreshProject);
 end;
 
-{ TBEContextMenuInstallSeparator }
-
-constructor TBEContextMenuInstallSeparator.create(Project: IOTAProject);
-begin
-  inherited create(Project);
-  FCaption := '-';
-  FVerb := '-';
-  FPosition := BOSS_INSTALL_SEPARATOR_POSITION;
-  FParent := BOSS_VERB;
-end;
-
-{ TBEContextMenuDependenciesSeparator }
-
-constructor TBEContextMenuDependenciesSeparator.create(Project: IOTAProject);
-begin
-  inherited create(Project);
-  FCaption := '-';
-  FVerb := '-';
-  FPosition := BOSS_DEPENDENCIES_SEPARATOR_POSITION;
-  FParent := BOSS_VERB;
-end;
-
 { TBEContextMenuDependencies }
 
 constructor TBEContextMenuDependencies.create(Project: IOTAProject);
 begin
   inherited create(Project);
   FCaption := BOSS_DEPENDENCIES_CAPTION;
-  FVerb := BOSS_DEPENDENCIES_VERB;
+  FVerb := BOSS_DEPENDENCIES_CAPTION;
   FPosition := BOSS_DEPENDENCIES_POSITION;
-  FParent := BOSS_VERB;
+  FParent := BOSS_CAPTION;
 end;
 
 procedure TBEContextMenuDependencies.Execute(const MenuContextList: IInterfaceList);
@@ -419,6 +403,39 @@ begin
   finally
     BEWizardForms.Free;
   end;
+end;
+
+{ TBEContextMenuSeparator }
+
+constructor TBEContextMenuSeparator.create(Project: IOTAProject; Position: Integer);
+begin
+  inherited create(Project);
+  FPosition := Position;
+  FCaption := '-';
+  FVerb := '-';
+  FParent := BOSS_CAPTION;
+end;
+
+class function TBEContextMenuSeparator.New(Project: IOTAProject; Position: Integer): IOTAProjectManagerMenu;
+begin
+  result := Self.create(Project, Position);
+end;
+
+{ TBEContextMenuCacheRemove }
+
+constructor TBEContextMenuCacheRemove.create(Project: IOTAProject);
+begin
+  inherited create(Project);
+  FCaption := BOSS_REMOVE_CACHE_CAPTION;
+  FVerb := BOSS_REMOVE_CACHE_CAPTION;
+  FPosition := BOSS_REMOVE_CACHE_POSITION;
+  FParent := BOSS_CAPTION;
+end;
+
+procedure TBEContextMenuCacheRemove.Execute(const MenuContextList: IInterfaceList);
+begin
+  VerifyBoss;
+  FBossCommand.RemoveCache(Self.DoRefreshProject);
 end;
 
 initialization
