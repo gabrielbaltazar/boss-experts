@@ -27,7 +27,7 @@ const
 
   BOSS_JSON = 'boss.json';
 
-  // Commands
+  // Boss Commands
   BOSS_INIT = 'boss init';
   BOSS_LOGIN = 'boss login';
   BOSS_INSTALL = 'boss install';
