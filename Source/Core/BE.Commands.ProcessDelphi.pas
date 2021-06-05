@@ -36,6 +36,7 @@ type TBECommandsProcessDelphi = class(TInterfacedObject, IBECommands)
     function Uninstall(AComplete: TProc = nil): IBECommands; overload;
     function Uninstall(ADependency: TBEModelDependency; AComplete: TProc = nil): IBECommands; overload;
 
+    function RemoveCache(AComplete: TProc = nil): IBECommands;
     function BossInstalled: Boolean;
   public
     constructor create(Path: string);
@@ -66,31 +67,37 @@ end;
 function TBECommandsProcessDelphi.Init: IBECommands;
 begin
   result := Self;
-  RunCommand('boss init', nil);
+  RunCommand(BOSS_INIT, nil);
 end;
 
 function TBECommandsProcessDelphi.Install(AComplete: TProc = nil): IBECommands;
 begin
   result := Self;
 
-  RunCommand('boss install', AComplete);
+  RunCommand(BOSS_INSTALL, AComplete);
 end;
 
 function TBECommandsProcessDelphi.Install(ADependency: TBEModelDependency; AComplete: TProc): IBECommands;
 begin
   result := Self;
-  RunCommand(Format('boss install %s', [ADependency.ToString]).Trim, AComplete);
+  RunCommand(Format('%s %s', [BOSS_INSTALL, ADependency.ToString]).Trim, AComplete);
 end;
 
 function TBECommandsProcessDelphi.Login(Host: String): IBECommands;
 begin
   result := Self;
-  RunCommand(Format('boss login %s', [Host]), nil);
+  RunCommand(Format('%s %s', [BOSS_LOGIN, Host]), nil);
 end;
 
 class function TBECommandsProcessDelphi.New(Path: string): IBECommands;
 begin
   result := Self.create(Path);
+end;
+
+function TBECommandsProcessDelphi.RemoveCache(AComplete: TProc = nil): IBECommands;
+begin
+  Result := Self;
+  RunCommand(BOSS_REMOVE_CACHE, AComplete);
 end;
 
 procedure TBECommandsProcessDelphi.RunCommand(ACommand: String; AComplete: TProc);
@@ -136,25 +143,25 @@ end;
 function TBECommandsProcessDelphi.Uninstall(AComplete: TProc = nil): IBECommands;
 begin
   result := Self;
-  RunCommand('boss uninstall', AComplete);
+  RunCommand(BOSS_UNINSTALL, AComplete);
 end;
 
 function TBECommandsProcessDelphi.Uninstall(ADependency: TBEModelDependency; AComplete: TProc = nil): IBECommands;
 begin
   result := Self;
-  RunCommand(Format('boss uninstall %s', [ADependency.name]).Trim, AComplete);
+  RunCommand(Format('%s %s', [BOSS_UNINSTALL, ADependency.name]).Trim, AComplete);
 end;
 
 function TBECommandsProcessDelphi.Update(AComplete: TProc = nil): IBECommands;
 begin
   result := Self;
-  RunCommand('boss update', AComplete);
+  RunCommand(BOSS_UPDATE, AComplete);
 end;
 
 function TBECommandsProcessDelphi.Update(ADependency: TBEModelDependency; AComplete: TProc): IBECommands;
 begin
   result := Self;
-  RunCommand(Format('boss update %s', [ADependency.ToString]).Trim, AComplete);
+  RunCommand(Format('%s %s', [BOSS_UPDATE, ADependency.ToString]).Trim, AComplete);
 end;
 
 end.

@@ -14,26 +14,26 @@ const
   BOSS_UNINSTALL_POSITION = BOSS_POSITION + 50;
   BOSS_DEPENDENCIES_SEPARATOR_POSITION = BOSS_POSITION + 60;
   BOSS_DEPENDENCIES_POSITION = BOSS_POSITION + 70;
+  BOSS_CACHE_SEPARATOR_POSITION = BOSS_POSITION + 80;
+  BOSS_REMOVE_CACHE_POSITION = BOSS_POSITION + 90;
 
   BOSS_CAPTION = 'Boss';
-  BOSS_VERB = 'Boss';
-
   BOSS_INIT_CAPTION = 'Init';
-  BOSS_INIT_VERB = 'BossInit';
-
   BOSS_DEPENDENCIES_CAPTION = 'Dependencies...';
-  BOSS_DEPENDENCIES_VERB = 'Dependencies';
-
   BOSS_INSTALL_CAPTION = 'Install';
-  BOSS_INSTALL_VERB = 'Install';
-
   BOSS_UPDATE_CAPTION = 'Update';
-  BOSS_UPDATE_VERB = 'Update';
-
   BOSS_UNINSTALL_CAPTION = 'Uninstall';
-  BOSS_UNINSTALL_VERB = 'Uninstall';
+  BOSS_REMOVE_CACHE_CAPTION = 'Remove Cache';
 
   BOSS_JSON = 'boss.json';
+
+  // Boss Commands
+  BOSS_INIT = 'boss init';
+  BOSS_LOGIN = 'boss login';
+  BOSS_INSTALL = 'boss install';
+  BOSS_UPDATE = 'boss update';
+  BOSS_UNINSTALL = 'boss uninstall';
+  BOSS_REMOVE_CACHE = 'boss config cache rm';
 
 implementation
 
