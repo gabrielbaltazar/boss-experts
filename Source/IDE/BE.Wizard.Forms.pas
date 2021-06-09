@@ -25,6 +25,7 @@ type
     lstDependencies: TListBox;
     Label5: TLabel;
     edtSearch: TEdit;
+    btnClose: TButton;
     procedure FormShow(Sender: TObject);
     procedure btnInstallClick(Sender: TObject);
     procedure btnUpdateClick(Sender: TObject);
@@ -33,6 +34,7 @@ type
     procedure lstHistoryClick(Sender: TObject);
     procedure lstDependenciesClick(Sender: TObject);
     procedure edtSearchChange(Sender: TObject);
+    procedure btnCloseClick(Sender: TObject);
   private
     FProject: IOTAProject;
     FBossCommand: IBECommands;
@@ -59,6 +61,11 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TBEWizardForms.btnCloseClick(Sender: TObject);
+begin
+  Close;
+end;
 
 procedure TBEWizardForms.btnInstallClick(Sender: TObject);
 var
