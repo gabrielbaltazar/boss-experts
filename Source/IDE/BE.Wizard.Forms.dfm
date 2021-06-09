@@ -87,13 +87,22 @@ object BEWizardForms: TBEWizardForms
       OnClick = btnUninstallClick
     end
     object btnLogin: TButton
-      Left = 555
+      Left = 299
       Top = 8
       Width = 91
       Height = 25
       Caption = 'Login'
       TabOrder = 3
       OnClick = btnLoginClick
+    end
+    object btnClose: TButton
+      Left = 555
+      Top = 8
+      Width = 91
+      Height = 25
+      Caption = 'Close'
+      TabOrder = 4
+      OnClick = btnCloseClick
     end
   end
   object edtHostLogin: TComboBox
