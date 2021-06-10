@@ -60,7 +60,6 @@ Type
     FProcessOptions : TProcessOptions;
     FStartupOptions : TStartupOptions;
     FProcessID : Integer;
-    FTerminalProgram: String;
     FThreadID : Integer;
     FProcessHandle : Thandle;
     FThreadHandle : Thandle;
@@ -503,7 +502,6 @@ var
     outputlength, stderrlength : integer;
     stderrnumbytes,stderrbytesread : integer;
 begin
-  result:=-1;
   bytesread:=0;
   outputlength:=0;
   stderrbytesread:=0;
