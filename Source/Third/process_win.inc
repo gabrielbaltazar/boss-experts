@@ -102,8 +102,8 @@ var
   memsize: integer;
 begin
   EnvBlock := '';
-  For I:=0 to List.Count-1 do begin
-    item := List[i];
+  For I:=0 to Pred(List.Count) do begin
+    item := AnsiString(List[i]);
     EnvBlock := EnvBlock + item + #0;
   end;
   EnvBlock := EnvBlock + #0;
