@@ -35,6 +35,7 @@ type
     procedure lstDependenciesClick(Sender: TObject);
     procedure edtSearchChange(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     FProject: IOTAProject;
     FBossCommand: IBECommands;
@@ -96,7 +97,10 @@ begin
 
   dependency := GetDependency(lstDependencies.Items[lstDependencies.ItemIndex]);
   try
-    FBossCommand.Uninstall(dependency, Self.DoUninstallDependency);
+    if(MessageDlg(PwideChar('Do you really want to uninstall the dependency ' + dependency.name + '?'),
+                  mtConfirmation, [mbYes, mbNo], 0, mbNo) = mrYes)
+    then
+      FBossCommand.Uninstall(dependency, Self.DoUninstallDependency);
   finally
     dependency.Free;
   end;
@@ -146,6 +150,12 @@ end;
 procedure TBEWizardForms.edtSearchChange(Sender: TObject);
 begin
   Self.LoadHistory;
+end;
+
+procedure TBEWizardForms.FormCreate(Sender: TObject);
+begin
+  Constraints.MinHeight := Height;
+  Constraints.MinWidth  := Width;
 end;
 
 procedure TBEWizardForms.FormShow(Sender: TObject);
