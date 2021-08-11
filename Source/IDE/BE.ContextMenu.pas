@@ -8,7 +8,9 @@ uses
   BE.Commands.Interfaces,
   BE.Wizard.Forms,
   System.Classes,
-  System.SysUtils;
+  System.SysUtils,
+  Vcl.Dialogs,
+  Vcl.Controls;
 
 type
   TBEOnContextMenuClick = procedure (const MenuContextList: IInterfaceList) of object;
@@ -175,7 +177,8 @@ end;
 procedure TBEContextMenuWizard.OnExecuteBossUninstall(const MenuContextList: IInterfaceList);
 begin
   VerifyBoss;
-  FBossCommand.Uninstall(Self.DoRefreshProject);
+  if(MessageDlg('Do you really want to uninstall all dependency?', mtConfirmation, [mbYes, mbNo], 0, mbNo) = mrYes)then
+    FBossCommand.Uninstall(Self.DoRefreshProject);
 end;
 
 procedure TBEContextMenuWizard.OnExecuteBossUpdate(const MenuContextList: IInterfaceList);
