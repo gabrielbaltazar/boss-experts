@@ -1,10 +1,10 @@
 object BEWizardForms: TBEWizardForms
   Left = 0
   Top = 0
-  BorderStyle = bsDialog
+  BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'Boss Experts'
-  ClientHeight = 309
-  ClientWidth = 654
+  ClientHeight = 361
+  ClientWidth = 644
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,7 +13,11 @@ object BEWizardForms: TBEWizardForms
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnCreate = FormCreate
   OnShow = FormShow
+  DesignSize = (
+    644
+    361)
   PixelsPerInch = 96
   TextHeight = 13
   object Label3: TLabel
@@ -52,54 +56,96 @@ object BEWizardForms: TBEWizardForms
     Caption = 'Dependencies'
   end
   object pnlBottom: TPanel
+    AlignWithMargins = True
     Left = 0
-    Top = 268
-    Width = 654
-    Height = 41
+    Top = 324
+    Width = 644
+    Height = 37
+    Margins.Left = 0
+    Margins.Top = 0
+    Margins.Right = 0
+    Margins.Bottom = 0
     Align = alBottom
     BevelOuter = bvNone
+    Padding.Left = 8
+    Padding.Right = 8
+    Padding.Bottom = 10
     TabOrder = 6
     object btnInstall: TButton
+      AlignWithMargins = True
       Left = 8
-      Top = 8
+      Top = 0
       Width = 91
-      Height = 25
+      Height = 27
+      Cursor = crHandPoint
+      Margins.Left = 0
+      Margins.Top = 0
+      Margins.Right = 4
+      Margins.Bottom = 0
+      Align = alLeft
       Caption = 'Install'
       TabOrder = 0
       OnClick = btnInstallClick
     end
     object btnUpdate: TButton
-      Left = 105
-      Top = 8
+      AlignWithMargins = True
+      Left = 103
+      Top = 0
       Width = 91
-      Height = 25
+      Height = 27
+      Margins.Left = 0
+      Margins.Top = 0
+      Margins.Right = 4
+      Margins.Bottom = 0
+      Align = alLeft
       Caption = 'Update'
       TabOrder = 1
       OnClick = btnUpdateClick
     end
     object btnUninstall: TButton
-      Left = 202
-      Top = 8
+      AlignWithMargins = True
+      Left = 198
+      Top = 0
       Width = 91
-      Height = 25
+      Height = 27
+      Cursor = crHandPoint
+      Margins.Left = 0
+      Margins.Top = 0
+      Margins.Right = 4
+      Margins.Bottom = 0
+      Align = alLeft
       Caption = 'Uninstall'
       TabOrder = 2
       OnClick = btnUninstallClick
     end
     object btnLogin: TButton
-      Left = 299
-      Top = 8
+      AlignWithMargins = True
+      Left = 293
+      Top = 0
       Width = 91
-      Height = 25
+      Height = 27
+      Cursor = crHandPoint
+      Margins.Left = 0
+      Margins.Top = 0
+      Margins.Right = 4
+      Margins.Bottom = 0
+      Align = alLeft
       Caption = 'Login'
       TabOrder = 3
       OnClick = btnLoginClick
     end
     object btnClose: TButton
-      Left = 555
-      Top = 8
+      AlignWithMargins = True
+      Left = 545
+      Top = 0
       Width = 91
-      Height = 25
+      Height = 27
+      Cursor = crHandPoint
+      Margins.Left = 0
+      Margins.Top = 0
+      Margins.Right = 0
+      Margins.Bottom = 0
+      Align = alRight
       Caption = 'Close'
       TabOrder = 4
       OnClick = btnCloseClick
@@ -135,8 +181,9 @@ object BEWizardForms: TBEWizardForms
   object lstHistory: TListBox
     Left = 333
     Top = 50
-    Width = 313
-    Height = 212
+    Width = 303
+    Height = 268
+    Anchors = [akLeft, akTop, akRight, akBottom]
     ItemHeight = 13
     TabOrder = 5
     OnClick = lstHistoryClick
@@ -145,7 +192,8 @@ object BEWizardForms: TBEWizardForms
     Left = 8
     Top = 111
     Width = 313
-    Height = 151
+    Height = 207
+    Anchors = [akLeft, akTop, akBottom]
     ItemHeight = 13
     TabOrder = 3
     OnClick = lstDependenciesClick
@@ -153,8 +201,12 @@ object BEWizardForms: TBEWizardForms
   object edtSearch: TEdit
     Left = 333
     Top = 23
-    Width = 313
+    Width = 303
     Height = 21
+    Hint = 'History search  '
+    Anchors = [akLeft, akTop, akRight]
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 4
     OnChange = edtSearchChange
   end

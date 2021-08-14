@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
-  BE.Commands.Interfaces, Vcl.ComCtrls, ToolsAPI, BE.Model, Vcl.Menus;
+  BE.Commands.Interfaces, Vcl.ComCtrls, ToolsAPI, BE.Model, Vcl.Menus,
+  BE.Dialogs;
 
 type
   TBEWizardForms = class(TForm)
@@ -35,6 +36,7 @@ type
     procedure lstDependenciesClick(Sender: TObject);
     procedure edtSearchChange(Sender: TObject);
     procedure btnCloseClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     FProject: IOTAProject;
     FBossCommand: IBECommands;
@@ -96,7 +98,9 @@ begin
 
   dependency := GetDependency(lstDependencies.Items[lstDependencies.ItemIndex]);
   try
-    FBossCommand.Uninstall(dependency, Self.DoUninstallDependency);
+    if MessageConfirmation('Do you really want to uninstall the dependency %s?', [dependency.name])
+    then
+      FBossCommand.Uninstall(dependency, Self.DoUninstallDependency);
   finally
     dependency.Free;
   end;
@@ -146,6 +150,12 @@ end;
 procedure TBEWizardForms.edtSearchChange(Sender: TObject);
 begin
   Self.LoadHistory;
+end;
+
+procedure TBEWizardForms.FormCreate(Sender: TObject);
+begin
+  Constraints.MinHeight := Height;
+  Constraints.MinWidth  := Width;
 end;
 
 procedure TBEWizardForms.FormShow(Sender: TObject);

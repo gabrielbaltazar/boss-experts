@@ -6,6 +6,7 @@ uses
   ToolsAPI,
   BE.Constants,
   BE.Commands.Interfaces,
+  BE.Dialogs,
   BE.Wizard.Forms,
   System.Classes,
   System.SysUtils;
@@ -175,7 +176,9 @@ end;
 procedure TBEContextMenuWizard.OnExecuteBossUninstall(const MenuContextList: IInterfaceList);
 begin
   VerifyBoss;
-  FBossCommand.Uninstall(Self.DoRefreshProject);
+
+  if MessageConfirmation('Do you really want to uninstall all dependency?') then
+    FBossCommand.Uninstall(Self.DoRefreshProject);
 end;
 
 procedure TBEContextMenuWizard.OnExecuteBossUpdate(const MenuContextList: IInterfaceList);
