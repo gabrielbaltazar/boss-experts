@@ -6,11 +6,10 @@ uses
   ToolsAPI,
   BE.Constants,
   BE.Commands.Interfaces,
+  BE.Dialogs,
   BE.Wizard.Forms,
   System.Classes,
-  System.SysUtils,
-  Vcl.Dialogs,
-  Vcl.Controls;
+  System.SysUtils;
 
 type
   TBEOnContextMenuClick = procedure (const MenuContextList: IInterfaceList) of object;
@@ -177,7 +176,8 @@ end;
 procedure TBEContextMenuWizard.OnExecuteBossUninstall(const MenuContextList: IInterfaceList);
 begin
   VerifyBoss;
-  if(MessageDlg('Do you really want to uninstall all dependency?', mtConfirmation, [mbYes, mbNo], 0, mbNo) = mrYes)then
+
+  if MessageConfirmation('Do you really want to uninstall all dependency?') then
     FBossCommand.Uninstall(Self.DoRefreshProject);
 end;
 

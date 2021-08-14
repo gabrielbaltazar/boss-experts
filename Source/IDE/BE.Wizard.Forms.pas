@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
-  BE.Commands.Interfaces, Vcl.ComCtrls, ToolsAPI, BE.Model, Vcl.Menus;
+  BE.Commands.Interfaces, Vcl.ComCtrls, ToolsAPI, BE.Model, Vcl.Menus,
+  BE.Dialogs;
 
 type
   TBEWizardForms = class(TForm)
@@ -97,8 +98,7 @@ begin
 
   dependency := GetDependency(lstDependencies.Items[lstDependencies.ItemIndex]);
   try
-    if(MessageDlg(PwideChar('Do you really want to uninstall the dependency ' + dependency.name + '?'),
-                  mtConfirmation, [mbYes, mbNo], 0, mbNo) = mrYes)
+    if MessageConfirmation('Do you really want to uninstall the dependency %s?', [dependency.name])
     then
       FBossCommand.Uninstall(dependency, Self.DoUninstallDependency);
   finally

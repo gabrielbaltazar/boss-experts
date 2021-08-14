@@ -71,7 +71,6 @@ object BEWizardForms: TBEWizardForms
     Padding.Right = 8
     Padding.Bottom = 10
     TabOrder = 6
-    ExplicitTop = 262
     object btnInstall: TButton
       AlignWithMargins = True
       Left = 8
@@ -188,7 +187,6 @@ object BEWizardForms: TBEWizardForms
     ItemHeight = 13
     TabOrder = 5
     OnClick = lstHistoryClick
-    ExplicitHeight = 206
   end
   object lstDependencies: TListBox
     Left = 8
@@ -199,7 +197,6 @@ object BEWizardForms: TBEWizardForms
     ItemHeight = 13
     TabOrder = 3
     OnClick = lstDependenciesClick
-    ExplicitHeight = 145
   end
   object edtSearch: TEdit
     Left = 333
