@@ -1,6 +1,6 @@
 <p align="center">
-  <a href="https://github.com/adrianosantostreina/boss-experts/blob/README/Source/Images/boss_experts_icon.png">
-    <img alt="BossExperts" src="https://github.com/adrianosantostreina/boss-experts/blob/README/Source/Images/boss_experts_icon.png">
+  <a href="https://github.com/gabrielbaltazar/boss-experts/tree/master/Source/Images/boss_experts_icon.png">
+    <img alt="BossExperts" src="https://github.com/gabrielbaltazar/boss-experts/tree/master/Source/Images/boss_experts_icon.png">
   </a>  
 </p>
 
@@ -35,8 +35,8 @@ The available options are:
 Clicking on Dependencies will open the utility window, as shown in the image below 👇
 
 <p align="center">
-  <a href="https://github.com/adrianosantostreina/boss-experts/blob/README/Source/Images/boss_experts_janela.png">
-    <img alt="BossExperts" src="https://github.com/adrianosantostreina/boss-experts/blob/README/Source/Images/boss_experts_janela.png">
+  <a href="https://github.com/gabrielbaltazar/boss-experts/tree/master/Source/Images/boss_experts_janela.png">
+    <img alt="BossExperts" src="https://github.com/gabrielbaltazar/boss-experts/tree/master/Source/Images/boss_experts_janela.png">
   </a>  
 </p>
 
@@ -63,13 +63,13 @@ Boss Experts will search for new versions of each dependency and update them aut
 ## ⛔ Uninstalling Dependencies
 To unistall a dependency in yout project, select a dependency and click in <b>Uninstall</b>.
 
-## 🔐 Installing Dependencies by Private Repository
-
+## 🔐 Login
+Click Login if you want to login to a private repository.
 
 
 ## Documentation Languages
-[English (en)](https://github.com/adrianosantostreina/LoadPhotoFromURL/blob/main/README.md)<br>
-[Português (ptBR)](https://github.com/adrianosantostreina/LoadPhotoFromURL/blob/main/README-ptBR.md)<br>
+[English (en)](https://github.com/gabrielbaltazar/boss-experts/tree/master/README.md)<br>
+[Português (ptBR)](https://github.com/gabrielbaltazar/boss-experts/tree/master/README-ptBR.md)<br>
 
 ## ⚠️ License
-`Boss Experts` is free and open-source library licensed under the [MIT License](https://github.com/adrianosantostreina/LoadPhotoFromURL/blob/main/LICENSE.md). 
+`Boss Experts` is free and open-source library licensed under the [MIT License](https://github.com/gabrielbaltazar/boss-experts/tree/master/LICENSE.md). 
