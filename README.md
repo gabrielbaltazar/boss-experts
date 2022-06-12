@@ -1,6 +1,6 @@
 <p align="center">
-  <a href="https://github.com/adrianosantostreina/LoadPhotoFromURL/blob/main/image/logo.png">
-    <img alt="LoadPhotoFromURL" src="https://github.com/adrianosantostreina/LoadPhotoFromURL/blob/main/image/logo.png">
+  <a href="https://github.com/adrianosantostreina/boss-experts/blob/README/Source/Images/boss_experts_icon.png">
+    <img alt="BossExperts" src="https://github.com/adrianosantostreina/LoadPhotoFromURL/blob/main/image/logo.png">
   </a>  
 </p>
 
@@ -36,7 +36,7 @@ Clicking on Dependencies will open the utility window, as shown in the image bel
 
 <p align="center">
   <a href="https://github.com/adrianosantostreina/LoadPhotoFromURL/blob/main/image/logo.png">
-    <img alt="LoadPhotoFromURL" src="https://github.com/adrianosantostreina/LoadPhotoFromURL/blob/main/image/logo.png">
+    <img alt="BossExperts" src="https://github.com/adrianosantostreina/LoadPhotoFromURL/blob/main/image/logo.png">
   </a>  
 </p>
 
