@@ -1,102 +1,30 @@
-object BEWizardForms: TBEWizardForms
+object Form2: TForm2
   Left = 0
   Top = 0
-  BorderIcons = [biSystemMenu, biMinimize]
-  Caption = 'Boss Experts'
-  ClientHeight = 612
-  ClientWidth = 744
-  Color = 15395562
+  Caption = 'Form2'
+  ClientHeight = 578
+  ClientWidth = 835
+  Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
-  Font.Height = -11
-  Font.Name = 'Tahoma'
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
   Font.Style = []
-  Position = poScreenCenter
-  OnCreate = FormCreate
-  OnShow = FormShow
-  TextHeight = 13
+  TextHeight = 15
   object pnlBack: TPanel
     Left = 0
     Top = 0
-    Width = 744
-    Height = 612
+    Width = 835
+    Height = 578
     Align = alClient
     Color = clWhite
     ParentBackground = False
     TabOrder = 0
-    DesignSize = (
-      744
-      612)
-    object Label1: TLabel
-      Left = 80
-      Top = 179
-      Width = 70
-      Height = 13
-      Caption = 'Dependency'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Tahoma'
-      Font.Style = [fsBold]
-      ParentFont = False
-    end
-    object Label2: TLabel
-      Left = 328
-      Top = 179
-      Width = 42
-      Height = 13
-      Caption = 'Version'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Tahoma'
-      Font.Style = [fsBold]
-      ParentFont = False
-    end
-    object Label3: TLabel
-      Left = 79
-      Top = 136
-      Width = 30
-      Height = 13
-      Caption = 'Login'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Tahoma'
-      Font.Style = [fsBold]
-      ParentFont = False
-    end
-    object Label4: TLabel
-      Left = 407
-      Top = 136
-      Width = 41
-      Height = 13
-      Caption = 'History'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Tahoma'
-      Font.Style = [fsBold]
-      ParentFont = False
-    end
-    object Label5: TLabel
-      Left = 79
-      Top = 222
-      Width = 79
-      Height = 13
-      Caption = 'Dependencies'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'Tahoma'
-      Font.Style = [fsBold]
-      ParentFont = False
-    end
     object pnlBar: TPanel
       Left = 1
       Top = 129
       Width = 72
-      Height = 482
+      Height = 448
       Align = alLeft
       Color = clWhite
       ParentBackground = False
@@ -105,7 +33,7 @@ object BEWizardForms: TBEWizardForms
         Left = 1
         Top = 1
         Width = 70
-        Height = 480
+        Height = 446
         Align = alClient
         Picture.Data = {
           0954506E67496D61676589504E470D0A1A0A0000000D494844520000004A0000
@@ -230,7 +158,6 @@ object BEWizardForms: TBEWizardForms
           2F7950FF1ACF3BD05B6A5BD761F911FA85A9C16B3C4278C5BE6332C68B5A5F41
           579485E6335EC5E3BAE6467C1CCA87C7AC6A13B4103E55CF0BD316F44FE82353
           8357F1FE056BDB648B98EBF02B0000000049454E44AE426082}
-        OnClick = imgInstallClick
       end
       object imgUninstall: TImage
         Left = 6
@@ -293,7 +220,6 @@ object BEWizardForms: TBEWizardForms
           79157DD26AEB322C57D02E4782BFF1289188FD926373FC514BDED3BCA13F9895
           E2AF7832AEE507B17AB414CDB19AE02E22EF644A60FA079595DB754782BFE2FD
           07EE8FD06A3FF885EA0000000049454E44AE426082}
-        OnClick = imgUninstallClick
       end
       object imgUpdate: TImage
         Left = 6
@@ -354,7 +280,6 @@ object BEWizardForms: TBEWizardForms
           CF7846C06FA9AD5D95E93EF84B9DC4673C8C68C51ED29D8C0FB5BE054FF28DFA
           129FE2515C5371ED0737830D3A6D133D93A2852904A614F7B14EE253BCFF00E8
           43618B5B5E36970000000049454E44AE426082}
-        OnClick = imgUpdateClick
       end
       object imgLogin: TImage
         Left = 6
@@ -409,12 +334,11 @@ object BEWizardForms: TBEWizardForms
           7A4B23F01B0F2B74C7A6175A6AF851EB3BE82C3753FB1FBFE2D1B8A6409FBE6A
           A76F28F54A1334919AE6D98D290AA5E761331A815FF1FE01AEF8947C196C4EA1
           0000000049454E44AE426082}
-        OnClick = imgLoginClick
       end
       object imgExit: TImage
         AlignWithMargins = True
         Left = 6
-        Top = 415
+        Top = 383
         Width = 60
         Height = 60
         Cursor = crHandPoint
@@ -470,13 +394,12 @@ object BEWizardForms: TBEWizardForms
           E80F2695D7788470C5BE632A8E17B5587C3C959F346778158FF39AAFE275405D
           D057FA265F073932FDB730F14B74A6B84F4C2AAFE2FD0B4FA0D07C0A9D280300
           00000049454E44AE426082}
-        OnClick = imgExitClick
       end
     end
     object pnlTop: TPanel
       Left = 1
       Top = 1
-      Width = 742
+      Width = 833
       Height = 128
       Align = alTop
       BevelEdges = [beBottom]
@@ -854,14 +777,14 @@ object BEWizardForms: TBEWizardForms
         Stretch = True
       end
       object Panel1: TPanel
-        Left = 96
-        Top = 4
+        Left = 97
+        Top = 1
         Width = 735
         Height = 125
         BevelEdges = []
         BevelOuter = bvNone
         TabOrder = 0
-        object Label6: TLabel
+        object Label1: TLabel
           Left = -1
           Top = 2
           Width = 187
@@ -875,7 +798,7 @@ object BEWizardForms: TBEWizardForms
           Font.Style = []
           ParentFont = False
         end
-        object Label7: TLabel
+        object Label2: TLabel
           Left = 0
           Top = 44
           Width = 378
@@ -889,8 +812,22 @@ object BEWizardForms: TBEWizardForms
           Font.Style = []
           ParentFont = False
         end
-        object Label9: TLabel
-          Left = 544
+        object Label3: TLabel
+          Left = -1
+          Top = 66
+          Width = 133
+          Height = 15
+          Alignment = taCenter
+          Caption = 'by Gabriel Baltazar'
+          Font.Charset = ANSI_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -13
+          Font.Name = 'Consolas'
+          Font.Style = []
+          ParentFont = False
+        end
+        object Label4: TLabel
+          Left = 640
           Top = 2
           Width = 91
           Height = 15
@@ -904,65 +841,6 @@ object BEWizardForms: TBEWizardForms
           ParentFont = False
         end
       end
-    end
-    object edtHostLogin: TComboBox
-      Left = 79
-      Top = 152
-      Width = 313
-      Height = 21
-      ItemIndex = 1
-      TabOrder = 2
-      Text = 'github.com'
-      Items.Strings = (
-        'bitbucket.org'
-        'github.com'
-        'gitlab.com')
-    end
-    object edtSearch: TEdit
-      Left = 407
-      Top = 152
-      Width = 325
-      Height = 21
-      Hint = 'History search  '
-      Anchors = [akLeft, akTop, akRight]
-      ParentShowHint = False
-      ShowHint = True
-      TabOrder = 3
-      OnChange = edtSearchChange
-    end
-    object edtVersion: TEdit
-      Left = 328
-      Top = 195
-      Width = 65
-      Height = 21
-      TabOrder = 4
-    end
-    object edtDependency: TEdit
-      Left = 80
-      Top = 195
-      Width = 242
-      Height = 21
-      TabOrder = 5
-    end
-    object lstDependencies: TListBox
-      Left = 79
-      Top = 238
-      Width = 313
-      Height = 366
-      Anchors = [akLeft, akTop, akBottom]
-      ItemHeight = 13
-      TabOrder = 6
-      OnClick = lstDependenciesClick
-    end
-    object lstHistory: TListBox
-      Left = 407
-      Top = 179
-      Width = 325
-      Height = 425
-      Anchors = [akLeft, akTop, akRight, akBottom]
-      ItemHeight = 13
-      TabOrder = 7
-      OnClick = lstHistoryClick
     end
   end
 end
