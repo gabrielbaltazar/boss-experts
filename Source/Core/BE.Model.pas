@@ -11,9 +11,6 @@ uses
   BE.Helpers.Json,
   ToolsAPI;
 
-const
-  INI_FILE = 'BossExperts.ini';
-
 type
   TBEModelDependency = class;
 
@@ -57,6 +54,9 @@ type
 function GetIniFile: TIniFile;
 
 implementation
+
+const
+  INI_FILE = 'BossExperts.ini';
 
 function GetIniFile: TIniFile;
 var
