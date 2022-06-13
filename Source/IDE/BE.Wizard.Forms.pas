@@ -88,8 +88,8 @@ end;
 
 procedure TBEWizardForms.DoRefresh;
 begin
-  if Assigned(FProject) then
-    FProject.Refresh(True);
+//  if Assigned(FProject) then
+//    FProject.Refresh(True);
 end;
 
 procedure TBEWizardForms.DoUninstallDependency;
