@@ -1,6 +1,6 @@
 <p align="center">
-  <a href="https://github.com/gabrielbaltazar/boss-experts/tree/master/Source/Images/boss_experts_icon.png">
-    <img alt="BossExperts" src="https://github.com/gabrielbaltazar/boss-experts/tree/master/Source/Images/boss_experts_icon.png">
+  <a href="https://github.com/gabrielbaltazar/boss-experts/blob/master/Source/Images/boss_experts_icon.png">
+    <img alt="BossExperts" src="https://github.com/gabrielbaltazar/boss-experts/blob/master/Source/Images/boss_experts_icon.png">
   </a>  
 </p>
 
@@ -35,8 +35,8 @@ The available options are:
 Clicking on Dependencies will open the utility window, as shown in the image below 👇
 
 <p align="center">
-  <a href="https://github.com/gabrielbaltazar/boss-experts/tree/master/Source/Images/boss_experts_janela.png">
-    <img alt="BossExperts" src="https://github.com/gabrielbaltazar/boss-experts/tree/master/Source/Images/boss_experts_janela.png">
+  <a href="https://github.com/gabrielbaltazar/boss-experts/blob/master/Source/Images/boss_experts_janela.png">
+    <img alt="BossExperts" src="https://github.com/gabrielbaltazar/boss-experts/blob/master/Source/Images/boss_experts_janela.png">
   </a>  
 </p>
 
