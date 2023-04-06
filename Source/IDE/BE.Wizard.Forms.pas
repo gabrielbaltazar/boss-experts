@@ -35,6 +35,10 @@ type
     Label6: TLabel;
     Label7: TLabel;
     Label9: TLabel;
+    pMenuHistory: TPopupMenu;
+    DeleteHistoryItem1: TMenuItem;
+    N1: TMenuItem;
+    ClearHistory1: TMenuItem;
     procedure FormShow(Sender: TObject);
     procedure lstHistoryClick(Sender: TObject);
     procedure lstDependenciesClick(Sender: TObject);
@@ -45,6 +49,8 @@ type
     procedure imgLoginClick(Sender: TObject);
     procedure imgUninstallClick(Sender: TObject);
     procedure imgUpdateClick(Sender: TObject);
+    procedure DeleteHistoryItem1Click(Sender: TObject);
+    procedure ClearHistory1Click(Sender: TObject);
   private
     FProject: IOTAProject;
     FBossCommand: IBECommands;
@@ -59,6 +65,8 @@ type
     function GetDependency: TBEModelDependency; overload;
     function GetDependency(Text: String): TBEModelDependency; overload;
     procedure SaveHistoryDependency;
+    procedure DeleteHistoryItem;
+    procedure ClearHistory;
     { Private declarations }
   public
     constructor create(AOwner: TComponent; BossCommand: IBECommands; Project: IOTAProject); reintroduce;
@@ -72,11 +80,49 @@ implementation
 
 {$R *.dfm}
 
+procedure TBEWizardForms.ClearHistory;
+begin
+   if(not MessageConfirmation('Do you wish to clear the history?'))then
+     Exit;
+
+   TBEModel.ClearHistory;
+end;
+
+procedure TBEWizardForms.ClearHistory1Click(Sender: TObject);
+begin
+  Self.ClearHistory;
+  Self.LoadHistory;
+end;
+
 constructor TBEWizardForms.create(AOwner: TComponent; BossCommand: IBECommands; Project: IOTAProject);
 begin
   inherited create(AOwner);
   FBossCommand := BossCommand;
   FProject := Project;
+end;
+
+procedure TBEWizardForms.DeleteHistoryItem;
+  var
+  dependency: TBEModelDependency;
+begin
+  if(lstHistory.ItemIndex < 0)then
+    Exit;
+
+  if(not MessageConfirmation('Do you wish to delete '+lstHistory.Items[lstHistory.ItemIndex]+' ?'))then
+    Exit;
+
+  dependency := GetDependency(lstHistory.Items[lstHistory.ItemIndex]);
+  try
+    dependency.RemoveHistory;
+  finally
+    dependency.Free;
+  end;
+end;
+
+procedure TBEWizardForms.DeleteHistoryItem1Click(Sender: TObject);
+begin
+  Self.DeleteHistoryItem;
+  Self.LoadHistory;
 end;
 
 procedure TBEWizardForms.DoInstallDependency;

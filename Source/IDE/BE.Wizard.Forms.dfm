@@ -11,9 +11,11 @@ object BEWizardForms: TBEWizardForms
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  OldCreateOrder = True
   Position = poScreenCenter
   OnCreate = FormCreate
   OnShow = FormShow
+  PixelsPerInch = 96
   TextHeight = 13
   object pnlBack: TPanel
     Left = 0
@@ -961,8 +963,24 @@ object BEWizardForms: TBEWizardForms
       Height = 425
       Anchors = [akLeft, akTop, akRight, akBottom]
       ItemHeight = 13
+      PopupMenu = pMenuHistory
       TabOrder = 7
       OnClick = lstHistoryClick
+    end
+  end
+  object pMenuHistory: TPopupMenu
+    Left = 688
+    Top = 40
+    object DeleteHistoryItem1: TMenuItem
+      Caption = 'Delete item'
+      OnClick = DeleteHistoryItem1Click
+    end
+    object N1: TMenuItem
+      Caption = '-'
+    end
+    object ClearHistory1: TMenuItem
+      Caption = 'Clear history'
+      OnClick = ClearHistory1Click
     end
   end
 end

@@ -28,6 +28,7 @@ type
     constructor create;
     destructor Destroy; override;
 
+    class procedure ClearHistory;
     class procedure RemoveHistory(ADependency: String);
     class function LoadHistory: TBEModel;
     class function LoadDependencies(Project: IOTAProject): TBEModel;
@@ -62,10 +63,10 @@ function GetIniFile: TIniFile;
 var
   path: string;
 begin
-  path := ExtractFilePath(GetModuleName(HInstance) + 'BossExperts\');
-  ForceDirectories(path);
+   path := ExtractFilePath(GetModuleName(HInstance) + 'BossExperts\');
+   ForceDirectories(path);
 
-  result := TIniFile.Create(path + INI_FILE);
+   result := TIniFile.Create(path + INI_FILE);
 end;
 
 { TBEModel }
@@ -75,6 +76,27 @@ begin
   result := Self;
   if not DependencyExist(Name) then
     Fdependencies.Add(TBEModelDependency.create(Name, Version));
+end;
+
+class procedure TBEModel.ClearHistory;
+var
+  iniFile: TIniFile;
+  sections: TStrings;
+  i: Integer;
+begin
+  iniFile := GetIniFile;
+  try
+    sections := TStringList.Create;
+    try
+      iniFile.ReadSections(sections);
+      for i := 0 to Pred(sections.Count) do
+        iniFile.EraseSection(sections[i]);
+    finally
+      sections.Free;
+    end;
+  finally
+    iniFile.Free;
+  end;
 end;
 
 constructor TBEModel.create;
